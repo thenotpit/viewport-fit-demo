@@ -57,9 +57,9 @@ of their own, like the header here, didn't cause it.
 
 Watch for full-screen layers you didn't add yourself. A popover comes with a `::backdrop`, a
 transparent layer pinned over the whole screen, and opening the menu panel turned the bottom bar
-solid until the backdrop was switched off with `display: none`. The panel's 20% black scrim is drawn
-as a huge shadow on the panel itself instead, so it dims the screen without adding a full-screen
-layer.
+solid until the backdrop was switched off with `display: none`. A scrim drawn as a huge shadow on the
+panel instead avoided the solid bars but couldn't dim the strip behind the status bar, which is
+Safari's own colour, so the panel opens without one.
 
 ### Safari reads a colour, not the gradient
 

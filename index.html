@@ -114,14 +114,7 @@
         background: #000;
         color: #fff;
         font-size: 1rem;
-        /*
-         * The second shadow is the scrim: black at 20%, spread far enough to cover the screen. It is
-         * drawn by the panel rather than as a full-screen layer, because a layer pinned over the whole
-         * screen turns Safari's bars solid (see ::backdrop below). It fades in and out with the panel.
-         */
-        box-shadow:
-          0 1rem 2.5rem rgb(0 0 0 / 0.35),
-          0 0 0 200vmax rgb(0 0 0 / 0.2);
+        box-shadow: 0 1rem 2.5rem rgb(0 0 0 / 0.35);
         transform-origin: top right;
         /* The closed state, which it also leaves to. */
         opacity: 0;
