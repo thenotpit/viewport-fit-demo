@@ -142,6 +142,15 @@
         }
       }
 
+      /*
+       * A popover brings a ::backdrop: a transparent layer pinned over the whole screen. That makes it
+       * a fixed element touching every edge, which Safari turns into solid bars. The panel needs no
+       * backdrop, so it doesn't get one.
+       */
+      .credits::backdrop {
+        display: none;
+      }
+
       .credits a {
         color: inherit;
         font-weight: 600;

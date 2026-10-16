@@ -55,6 +55,10 @@ fixed layer touches both. The page then stops showing behind the bars. That same
 So the background is part of the page and scrolls with it. Small fixed elements without a background
 of their own, like the header here, didn't cause it.
 
+Watch for full-screen layers you didn't add yourself. A popover comes with a `::backdrop`, a
+transparent layer pinned over the whole screen, and opening the menu panel turned the bottom bar
+solid until the backdrop was switched off with `display: none`.
+
 ### Safari reads a colour, not the gradient
 
 Where Safari needs one colour (the strip behind the status bar, and the area past either end of the
