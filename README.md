@@ -8,10 +8,10 @@ top of the page to night at the bottom.
 
 There are three pages, switched from the menu:
 
-- **Viewport cover** (`index.html`): `viewport-fit=cover`. The page draws edge to edge behind
+- **Viewport Cover - No Strips** (`index.html`): `viewport-fit=cover`. The page draws edge to edge behind
   Safari's bars, one solid color fading from blue to night as you scroll, so the page and the bars
   are always exactly the same color.
-- **Viewport auto** (`viewport-auto.html`): the same page with the default viewport. It is
+- **Viewport Auto - Strips** (`viewport-auto.html`): the same page with the default viewport. It is
   letterboxed inside the status bar and the toolbars, and Safari paints them from two faint fixed
   strips at the screen's edges, which carry the same color.
 - **Gradient** (`gradient.html`): `viewport-fit=cover` with a day gradient on the page, over the
