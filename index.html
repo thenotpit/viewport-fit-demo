@@ -29,13 +29,36 @@
        * day for the first screen (lvh, the screen with the toolbars hidden), night by the end.
        */
       html {
-        background: linear-gradient(
-          var(--day-top),
-          var(--day-bottom) 100lvh,
-          var(--night-top) 75%,
-          var(--night-bottom)
-        )
-        no-repeat;
+        background: var(--day-top)
+          linear-gradient(
+            var(--day-top),
+            var(--day-bottom) 100lvh,
+            var(--night-top) 75%,
+            var(--night-bottom)
+          )
+          no-repeat;
+      }
+
+      /*
+       * The solid colour is what Safari shows where it needs one colour: the strip behind the status
+       * bar, and past either end of the page. One colour can't match both ends, so it follows the
+       * scroll from the sky's blue at the top to the night at the bottom. Where scroll timelines
+       * aren't supported, it stays blue.
+       */
+      @supports (animation-timeline: scroll()) {
+        html {
+          animation: page-colour linear both;
+          animation-timeline: scroll(root);
+        }
+      }
+
+      @keyframes page-colour {
+        from {
+          background-color: var(--day-top);
+        }
+        to {
+          background-color: var(--night-bottom);
+        }
       }
 
       body {

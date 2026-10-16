@@ -15,14 +15,19 @@ top of the page to night at the bottom.
    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
    ```
 
-2. **The sky is the page's own background**, a gradient painted on `html`. **`lvh`** (the screen
-   with the toolbars hidden) sets where day ends, so the first screen is the full day gradient.
+2. **The sky is the page's own background**, a gradient on `html` over a solid colour. **`lvh`** (the
+   screen with the toolbars hidden) sets where day ends, so the first screen is the full day gradient.
 
    ```css
    html {
-     background: linear-gradient(#2f6bff, #e6a3c3 100lvh, #120a2a 75%, #2b1550) no-repeat;
+     background: #2f6bff linear-gradient(#2f6bff, #e6a3c3 100lvh, #120a2a 75%, #2b1550) no-repeat;
    }
    ```
+
+   Safari ignores the gradient where it needs a single colour: the strip behind the status bar, and
+   past either end of the page. There it uses the solid colour, or white if there is none. One colour
+   can't match both ends, so a CSS scroll-driven animation moves it from the blue at the top to the
+   night at the bottom.
 
 3. **`env(safe-area-inset-*)`** keeps the pinned header's icons clear of the notch and rounded
    corners, now that the page reaches them.
