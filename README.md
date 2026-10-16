@@ -1,16 +1,16 @@
 # viewport-fit=cover demo
 
 One static page showing how to draw a page edge to edge on iPhone, behind Safari's toolbars, in
-HTML and CSS alone, with no scripts sampling or animating the toolbar's colour.
+HTML and CSS alone, with no scripts sampling or animating the toolbar's color.
 
 Open it on an iPhone and scroll: the sky runs behind the status bar and the toolbar, from day at the
 top of the page to night at the bottom.
 
 There are two pages, switched from the menu:
 
-- **Gradient** (`index.html`): a day gradient on the page, over a solid colour that follows the scroll.
-- **Solid colour** (`solid.html`): no gradient. The whole page is that one colour, fading from blue to
-  night as you scroll, so the page and Safari's bars are always exactly the same colour.
+- **Gradient** (`index.html`): a day gradient on the page, over a solid color that follows the scroll.
+- **Solid color** (`solid.html`): no gradient. The whole page is that one color, fading from blue to
+  night as you scroll, so the page and Safari's bars are always exactly the same color.
 
 Everything they share is in `styles.css`; each page sets only its own background on `html`.
 
@@ -24,7 +24,7 @@ Everything they share is in `styles.css`; each page sets only its own background
    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
    ```
 
-2. **The sky is a gradient on `html`, over a solid colour.** **`lvh`** (the screen with the toolbars
+2. **The sky is a gradient on `html`, over a solid color.** **`lvh`** (the screen with the toolbars
    hidden) sets where day ends, so the first screen is the full day gradient.
 
    ```css
@@ -33,16 +33,16 @@ Everything they share is in `styles.css`; each page sets only its own background
    }
    ```
 
-3. **The solid colour follows the scroll**, from the blue at the top of the page to the night at the
+3. **The solid color follows the scroll**, from the blue at the top of the page to the night at the
    bottom, with a CSS scroll-driven animation.
 
    ```css
    html {
-     animation: page-colour linear both;
+     animation: page-color linear both;
      animation-timeline: scroll(root);
    }
 
-   @keyframes page-colour {
+   @keyframes page-color {
      from { background-color: #2f6bff; }
      to   { background-color: #2b1550; }
    }
@@ -58,7 +58,7 @@ Everything they share is in `styles.css`; each page sets only its own background
 A `position: fixed` background layer, one that stays put while the page scrolls, turns Safari's bars
 solid. Safari tints its toolbars from fixed elements touching the screen's edges, and a full-screen
 fixed layer touches both. The page then stops showing behind the bars. That same heuristic is what
-"colour strips at the top and bottom" tricks rely on.
+"color strips at the top and bottom" tricks rely on.
 
 So the background is part of the page and scrolls with it. Small fixed elements without a background
 of their own, like the header here, didn't cause it.
@@ -67,18 +67,18 @@ Watch for full-screen layers you didn't add yourself. A popover comes with a `::
 transparent layer pinned over the whole screen, and opening the menu panel turned the bottom bar
 solid until the backdrop was switched off with `display: none`. A scrim drawn as a huge shadow on the
 panel instead avoided the solid bars but couldn't dim the strip behind the status bar, which is
-Safari's own colour, so the panel opens without one.
+Safari's own color, so the panel opens without one.
 
-### Safari reads a colour, not the gradient
+### Safari reads a color, not the gradient
 
-Where Safari needs one colour (the strip behind the status bar, and the area past either end of the
+Where Safari needs one color (the strip behind the status bar, and the area past either end of the
 page when you pull beyond it), it uses the page's solid `background-color`. It ignores the gradient,
-and with no solid colour set it falls back to white.
+and with no solid color set it falls back to white.
 
-### Move that colour with the scroll
+### Move that color with the scroll
 
-A page has only one background colour, and Safari shows it past both ends. A fixed blue matches the
-top of the page but shows blue past the bottom, where the page is night. Animating the colour against
+A page has only one background color, and Safari shows it past both ends. A fixed blue matches the
+top of the page but shows blue past the bottom, where the page is night. Animating the color against
 the scroll position keeps it matching whichever end you're at. The browser drives a scroll-driven
 animation itself, so no script runs on scroll. Browsers without scroll timelines keep the starting
 blue.
@@ -89,8 +89,8 @@ The **gradient** works on either. When `html` has no background, browsers paint 
 whole page instead, and the two look the same. This demo puts it on `html`, which was tested on an
 iPhone.
 
-The **solid colour** is safest on `html`. Once `html` has any background, `body`'s background only
-covers the body's own box and is no longer the page's colour. This demo hasn't tested a colour on
+The **solid color** is safest on `html`. Once `html` has any background, `body`'s background only
+covers the body's own box and is no longer the page's color. This demo hasn't tested a color on
 `body` alone.
 
 ### Why it's smoother than the strip hack
@@ -100,7 +100,7 @@ It comes down to what has to happen on each frame while you scroll.
 **The strip hack** runs a chain for every scroll update:
 
 1. Safari scrolls the page, then tells JavaScript that a scroll happened.
-2. The script works out a colour and changes the strips' style.
+2. The script works out a color and changes the strips' style.
 3. The browser recalculates styles and repaints the strips.
 4. Safari notices the strips changed and re-tints its toolbars, which is separate interface drawing
    outside the page.
@@ -114,10 +114,10 @@ hiccup on the main thread shows up as stutter.
 - **The gradient** is part of the page. Scrolling moves pixels that are already drawn.
 - **The hexagon** is fixed, so the browser keeps it on its own layer and leaves it in place while the
   page moves under it.
-- **The background colour** is the only thing that changes with the scroll, and a scroll-driven
+- **The background color** is the only thing that changes with the scroll, and a scroll-driven
   animation ties it straight to the scroll position. No script runs, so it can't fall behind.
 
-The colour isn't completely free: changing a background colour still means repainting, though it's a
+The color isn't completely free: changing a background color still means repainting, though it's a
 cheap flat fill. The real gain is that nothing waits on JavaScript and nothing fights Safari's
 toolbar logic. The strip hack fakes the effect from outside the page; this is the page.
 
@@ -131,7 +131,7 @@ animation is a CSS transition with `@starting-style`.
 
 | Page setup | Bars and the area past each end |
 |---|---|
-| Fixed full-screen sky layer | Solid bars in the fixed layer's colour |
-| Gradient only, no solid colour (on `html` or `body`) | White |
+| Fixed full-screen sky layer | Solid bars in the fixed layer's color |
+| Gradient only, no solid color (on `html` or `body`) | White |
 | Gradient on `html` over solid blue | Blue at both ends |
-| Gradient on `html`, solid colour animated from blue to night | Blue at the top, night at the bottom |
+| Gradient on `html`, solid color animated from blue to night | Blue at the top, night at the bottom |

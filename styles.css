@@ -14,19 +14,19 @@
 }
 
 /*
- * The solid colour is what Safari shows where it needs one colour: the strip behind the status
- * bar, and past either end of the page. One colour can't match both ends, so it follows the
+ * The solid color is what Safari shows where it needs one color: the strip behind the status
+ * bar, and past either end of the page. One color can't match both ends, so it follows the
  * scroll from the sky's blue at the top to the night at the bottom. Where scroll timelines
  * aren't supported, it stays blue.
  */
 @supports (animation-timeline: scroll()) {
   html {
-    animation: page-colour linear both;
+    animation: page-color linear both;
     animation-timeline: scroll(root);
   }
 }
 
-@keyframes page-colour {
+@keyframes page-color {
   from {
     background-color: var(--day-top);
   }
