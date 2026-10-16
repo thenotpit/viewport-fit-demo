@@ -1,7 +1,7 @@
 # viewport-fit=cover demo
 
-One static page showing how to draw a page edge to edge on iPhone, behind Safari's toolbars, with
-no scripts sampling or animating the toolbar's colour.
+One static page showing how to draw a page edge to edge on iPhone, behind Safari's toolbars, in
+HTML and CSS alone, with no scripts sampling or animating the toolbar's colour.
 
 Open it on an iPhone and scroll: the sky runs behind the status bar and the toolbar, from day at the
 top of the page to night at the bottom.
@@ -78,6 +78,40 @@ iPhone.
 The **solid colour** is safest on `html`. Once `html` has any background, `body`'s background only
 covers the body's own box and is no longer the page's colour. This demo hasn't tested a colour on
 `body` alone.
+
+### Why it's smoother than the strip hack
+
+It comes down to what has to happen on each frame while you scroll.
+
+**The strip hack** runs a chain for every scroll update:
+
+1. Safari scrolls the page, then tells JavaScript that a scroll happened.
+2. The script works out a colour and changes the strips' style.
+3. The browser recalculates styles and repaints the strips.
+4. Safari notices the strips changed and re-tints its toolbars, which is separate interface drawing
+   outside the page.
+
+On iPhone, scrolling happens on its own fast path, and scroll events reach JavaScript slightly after
+the page has already moved. So the strips are always a frame or more behind the content, and any
+hiccup on the main thread shows up as stutter.
+
+**This page does far less per frame:**
+
+- **The gradient** is part of the page. Scrolling moves pixels that are already drawn.
+- **The hexagon** is fixed, so the browser keeps it on its own layer and leaves it in place while the
+  page moves under it.
+- **The background colour** is the only thing that changes with the scroll, and a scroll-driven
+  animation ties it straight to the scroll position. No script runs, so it can't fall behind.
+
+The colour isn't completely free: changing a background colour still means repainting, though it's a
+cheap flat fill. The real gain is that nothing waits on JavaScript and nothing fights Safari's
+toolbar logic. The strip hack fakes the effect from outside the page; this is the page.
+
+### No JavaScript at all
+
+The page has no scripts. The menu button opens its panel with the HTML popover API
+(`popovertarget`), which also handles closing it on an outside tap or Escape, and the panel's
+animation is a CSS transition with `@starting-style`.
 
 ## What we saw on iPhone
 

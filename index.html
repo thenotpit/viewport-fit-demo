@@ -94,6 +94,64 @@
         border: 0;
         background: none;
         color: inherit;
+        cursor: pointer;
+      }
+
+      /*
+       * The credits panel: a popover the menu button opens and closes with no script. Tapping
+       * outside it or pressing Escape closes it too. It springs out of the button's corner, and
+       * @starting-style gives it a state to animate in from.
+       */
+      .credits {
+        position: fixed;
+        inset: auto;
+        top: calc(max(1rem, env(safe-area-inset-top)) + 2.75rem);
+        right: max(1.25rem, env(safe-area-inset-right));
+        margin: 0;
+        padding: 1.1rem 1.4rem;
+        border: 0;
+        border-radius: 1.25rem;
+        background: #000;
+        color: #fff;
+        font-size: 1rem;
+        box-shadow: 0 1rem 2.5rem rgb(0 0 0 / 0.35);
+        transform-origin: top right;
+        /* The closed state, which it also leaves to. */
+        opacity: 0;
+        scale: 0.6;
+        translate: 0.5rem -0.75rem;
+        transition:
+          opacity 0.18s ease,
+          scale 0.42s cubic-bezier(0.2, 1.35, 0.4, 1),
+          translate 0.42s cubic-bezier(0.2, 1.35, 0.4, 1),
+          display 0.42s allow-discrete,
+          overlay 0.42s allow-discrete;
+      }
+
+      .credits:popover-open {
+        opacity: 1;
+        scale: 1;
+        translate: 0 0;
+      }
+
+      @starting-style {
+        .credits:popover-open {
+          opacity: 0;
+          scale: 0.6;
+          translate: 0.5rem -0.75rem;
+        }
+      }
+
+      .credits a {
+        color: inherit;
+        font-weight: 600;
+        text-underline-offset: 0.2em;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .credits {
+          transition: none;
+        }
       }
 
       .visually-hidden {
@@ -152,12 +210,16 @@
       <svg viewBox="0 0 32 32" role="img" aria-label="Demo">
         <path fill="#fff" d="M16 2 30 16 16 30 2 16Z M16 9 9 16l7 7 7-7Z" fill-rule="evenodd" />
       </svg>
-      <button type="button" class="menu" aria-label="Menu">
+      <button type="button" class="menu" aria-label="Menu" popovertarget="credits">
         <svg viewBox="0 0 32 32" aria-hidden="true">
           <path d="M5 9h22M5 16h22M5 23h22" stroke="#fff" stroke-width="2.5" stroke-linecap="round" />
         </svg>
       </button>
     </header>
+
+    <div class="credits" id="credits" popover>
+      Demo by <a href="https://mrtipton.com">mrtipton.com</a>
+    </div>
 
     <svg class="anchor" viewBox="0 0 100 100" aria-hidden="true">
       <path d="M50 3 90.7 26.5v47L50 97 9.3 73.5v-47Z" />
