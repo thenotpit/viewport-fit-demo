@@ -131,7 +131,7 @@ animation is a CSS transition with `@starting-style`.
 
 In-app browsers draw an opaque bar of their own above the page. Safari's bars read the page's
 background color live; an in-app bar reads a color once at load and then stops. Two pages under
-`lab/`, not in the menu, each change one thing about the solid color page to find out what that
+`lab/`, the last two in the menu, each change one thing about the solid color page to find out what that
 bar will follow:
 
 - **`lab/edge-strips.html`**: a thin fixed strip at each screen edge, running the same
