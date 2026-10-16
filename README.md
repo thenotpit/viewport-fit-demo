@@ -8,9 +8,9 @@ top of the page to night at the bottom.
 
 There are two pages, switched from the menu:
 
-- **Gradient** (`index.html`): a day gradient on the page, over a solid color that follows the scroll.
-- **Solid color** (`solid.html`): no gradient. The whole page is that one color, fading from blue to
+- **Solid color** (`index.html`): no gradient. The whole page is that one color, fading from blue to
   night as you scroll, so the page and Safari's bars are always exactly the same color.
+- **Gradient** (`gradient.html`): a day gradient on the page, over a solid color that follows the scroll.
 
 Everything they share is in `styles.css`; each page sets only its own background on `html`.
 
