@@ -135,10 +135,13 @@ background color live; an in-app bar reads a color once at load and then stops. 
 make of a fixed element at the screen's edge:
 
 - **`lab/edge-strips.html`**: a thin fixed strip at each screen edge, running the same scroll-driven
-  keyframes as `html`. No script. WebKit samples a fixed element touching an edge when it is at
-  least 90% of the viewport wide and over 10px tall, and samples it again whenever it repaints. The
-  page drops `viewport-fit=cover`, so it sits inside the safe areas and whatever Safari paints behind
-  its bars is Safari's own reading of the strips, not the page showing through.
+  keyframes as `html`. No script. WebKit reads a fixed element touching an edge when it is at least
+  90% of the viewport wide and over 10px tall, and reads it again whenever it repaints. It reads
+  the color value rather than the pixels, so the strips here are at 10% opacity, WebKit's floor,
+  and blurred for a soft inner edge, and still report the full color. For now the page leaves out
+  `viewport-fit=cover`, so it sits inside the safe areas and Safari's bars show their own reading of
+  the strips. An in-app browser samples an edge only where its bar overlaps the page, so it reads
+  nothing from this page until `viewport-fit=cover` returns.
 
 What we saw in X's in-app browser: a `theme-color` meta tag kept equal to `html`'s color by a
 script had no effect at all, and the strips did move the bar, but only once the scroll came to

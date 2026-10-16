@@ -3,8 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <!--
-      No viewport-fit=cover here: the page stays inside the safe areas, so what Safari paints behind
-      its bars is Safari's own choice, not the page showing through.
+      No viewport-fit=cover here, for now: the page stays inside the safe areas, so what Safari paints
+      behind its bars is its own reading of the strips, not the page showing through. An in-app
+      browser samples the screen's edges only when its bars overlap the page, so it reads nothing
+      from this page until viewport-fit=cover comes back.
     -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>viewport-fit=cover demo: edge strips</title>
@@ -20,29 +22,36 @@
       }
 
       /*
-       * Lab: what do Safari's bars do with a fixed element touching the screen's edge? Two thin
-       * strips, one per edge, run the same scroll-driven keyframes as html, so they are always the
-       * page's own color. WebKit samples a fixed element at the edge only if it is at least 90% of
-       * the viewport wide and more than 10px tall, and re-samples when it repaints. Without
-       * viewport-fit=cover the safe-area insets are zero, so each strip is 12px.
+       * Lab: what do the bars do with a fixed element touching the screen's edge? Two thin strips,
+       * one per edge, run the same scroll-driven keyframes as html, so they are always the page's own
+       * color. WebKit reads a fixed element at an edge when it is at least 90% of the viewport wide
+       * and more than 10px tall, and reads it again whenever it repaints. It reads the color value,
+       * not the pixels, so the strip can be faint: opacity below 0.1 is skipped, 0.1 is the floor.
+       * The blur softens the strip's inner edge; each strip starts past the screen's edges so the
+       * blur's fade there is off screen. The strips sit above the header because WebKit reads
+       * whatever is topmost at the center of the edge.
        */
       .edge {
+        --bleed: 12px;
+        --blur: 6px;
         position: fixed;
-        left: 0;
-        right: 0;
+        left: calc(-1 * var(--blur));
+        right: calc(-1 * var(--blur));
         z-index: 2;
         pointer-events: none;
         background-color: var(--day-top);
+        opacity: 0.1;
+        filter: blur(var(--blur));
       }
 
       .edge-top {
-        top: 0;
-        height: max(12px, env(safe-area-inset-top));
+        top: calc(-1 * var(--bleed));
+        height: calc(max(12px, env(safe-area-inset-top)) + var(--bleed));
       }
 
       .edge-bottom {
-        bottom: 0;
-        height: max(12px, env(safe-area-inset-bottom));
+        bottom: calc(-1 * var(--bleed));
+        height: calc(max(12px, env(safe-area-inset-bottom)) + var(--bleed));
       }
 
       @supports (animation-timeline: scroll()) {
