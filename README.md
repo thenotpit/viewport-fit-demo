@@ -6,11 +6,16 @@ HTML and CSS alone, with no scripts sampling or animating the toolbar's color.
 Open it on an iPhone and scroll: the sky runs behind the status bar and the toolbar, from day at the
 top of the page to night at the bottom.
 
-There are two pages, switched from the menu:
+There are three pages, switched from the menu:
 
-- **Solid color** (`index.html`): no gradient. The whole page is that one color, fading from blue to
-  night as you scroll, so the page and Safari's bars are always exactly the same color.
-- **Gradient** (`gradient.html`): a day gradient on the page, over a solid color that follows the scroll.
+- **Viewport cover** (`index.html`): `viewport-fit=cover`. The page draws edge to edge behind
+  Safari's bars, one solid color fading from blue to night as you scroll, so the page and the bars
+  are always exactly the same color.
+- **Viewport auto** (`viewport-auto.html`): the same page with the default viewport. It is
+  letterboxed inside the status bar and the toolbars, and Safari paints them from two faint fixed
+  strips at the screen's edges, which carry the same color.
+- **Gradient** (`gradient.html`): `viewport-fit=cover` with a day gradient on the page, over the
+  solid color that follows the scroll.
 
 Everything they share is in `styles.css`; each page sets only its own background on `html`.
 
@@ -127,26 +132,24 @@ The page has no scripts. The menu button opens its panel with the HTML popover A
 (`popovertarget`), which also handles closing it on an outside tap or Escape, and the panel's
 animation is a CSS transition with `@starting-style`.
 
-## Lab
+### The edge strips
 
-In-app browsers draw an opaque bar of their own above the page. Safari's bars read the page's
-background color live; an in-app bar reads a color once at load and then stops. One page under
-`lab/`, the last in the menu, changes two things about the solid color page to see what the bars
-make of a fixed element at the screen's edge:
+Without `viewport-fit=cover`, the page stops short of the bars and Safari paints them itself. It
+reads a fixed element touching a screen edge when that element is at least 90% of the viewport
+wide and more than 10px tall, and reads it again whenever it repaints. It reads the element's
+color value, not its pixels, so the strips on the solid pages are at 10% opacity, Safari's floor
+for a candidate, and blurred for a soft inner edge, and still report the full color. They run the
+same scroll-driven keyframes as `html`, so they are always the page's own color and the bars
+follow the scroll live. Safari reads whatever is topmost at the center of the edge, so the strips
+sit above the header. On the cover page they are the page's color over the page's color, and
+invisible.
 
-- **`lab/edge-strips.html`**: a thin fixed strip at each screen edge, running the same scroll-driven
-  keyframes as `html`. No script. WebKit reads a fixed element touching an edge when it is at least
-  90% of the viewport wide and over 10px tall, and reads it again whenever it repaints. It reads
-  the color value rather than the pixels, so the strips here are at 10% opacity, WebKit's floor,
-  and blurred for a soft inner edge, and still report the full color. For now the page leaves out
-  `viewport-fit=cover`, so it sits inside the safe areas and Safari's bars show their own reading of
-  the strips. An in-app browser samples an edge only where its bar overlaps the page, so it reads
-  nothing from this page until `viewport-fit=cover` returns.
-
-What we saw in X's in-app browser: a `theme-color` meta tag kept equal to `html`'s color by a
-script had no effect at all, and the strips did move the bar, but only once the scroll came to
-rest. WebKit delivers the strip's new color on every frame of the scroll; the in-app browser
-applies it when scrolling settles, and nothing on the page changes that timing.
+In-app browsers draw an opaque bar of their own above the page. That bar reads a color once at
+load and then stops following `html`'s background. In X's in-app browser a `theme-color` meta tag
+kept equal to `html`'s color by a script had no effect, and the strips did move the bar, but only
+once the scroll came to rest: WebKit delivers the strip's new color on every frame, and the in-app
+browser applies it when scrolling settles. An in-app browser samples an edge only where its bar
+overlaps the page, so the strips reach it only on the cover page.
 
 ## What we saw on iPhone
 

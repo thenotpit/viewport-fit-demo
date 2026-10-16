@@ -1,4 +1,4 @@
-/* Shared by both pages of the demo. Each page sets its own background on html. */
+/* Shared by the pages of the demo. Each page sets its own background on html. */
 
 :root {
   --day-top: #2f6bff;
@@ -32,6 +32,47 @@
   }
   to {
     background-color: var(--night-bottom);
+  }
+}
+
+/*
+ * Two faint strips, one per screen edge, for the solid color pages. Safari reads a fixed element
+ * touching an edge for its bars when it is at least 90% of the viewport wide and more than 10px
+ * tall, and reads it again whenever it repaints. It reads the color value, not the pixels, so the
+ * strips can be faint: opacity 0.1 is the floor, below it they are skipped. They run the same
+ * scroll-driven keyframes as html, so they are always the page's own color, and the blur softens
+ * their inner edge. Each strip starts past the screen's edges so the blur's fade there is off
+ * screen, and sits above the header because Safari reads whatever is topmost at the center of the
+ * edge. An in-app browser samples an edge only where its bar overlaps the page, so the strips
+ * reach it only with viewport-fit=cover.
+ */
+.edge {
+  --bleed: 12px;
+  --blur: 6px;
+  position: fixed;
+  left: calc(-1 * var(--blur));
+  right: calc(-1 * var(--blur));
+  z-index: 2;
+  pointer-events: none;
+  background-color: var(--day-top);
+  opacity: 0.1;
+  filter: blur(var(--blur));
+}
+
+.edge-top {
+  top: calc(-1 * var(--bleed));
+  height: calc(max(12px, env(safe-area-inset-top)) + var(--bleed));
+}
+
+.edge-bottom {
+  bottom: calc(-1 * var(--bleed));
+  height: calc(max(12px, env(safe-area-inset-bottom)) + var(--bleed));
+}
+
+@supports (animation-timeline: scroll()) {
+  .edge {
+    animation: page-color linear both;
+    animation-timeline: scroll(root);
   }
 }
 

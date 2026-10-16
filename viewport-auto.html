@@ -3,14 +3,13 @@
   <head>
     <meta charset="utf-8" />
     <!--
-      No viewport-fit=cover here, for now: the page stays inside the safe areas, so what Safari paints
-      behind its bars is its own reading of the strips, not the page showing through. An in-app
-      browser samples the screen's edges only when its bars overlap the page, so it reads nothing
-      from this page until viewport-fit=cover comes back.
+      The default viewport, viewport-fit=auto: the page is letterboxed inside the status bar and
+      Safari's toolbars. What Safari paints behind them is its own reading of the page, so this is
+      the page the edge strips were made for.
     -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>viewport-fit=cover demo: edge strips</title>
-    <link rel="stylesheet" href="../styles.css" />
+    <title>viewport-fit=cover demo: viewport auto</title>
+    <link rel="stylesheet" href="styles.css" />
     <style>
       /*
        * No gradient: the page is one solid color, the same color Safari reads for the strip behind
@@ -19,46 +18,6 @@
        */
       html {
         background-color: var(--day-top);
-      }
-
-      /*
-       * Lab: what do the bars do with a fixed element touching the screen's edge? Two thin strips,
-       * one per edge, run the same scroll-driven keyframes as html, so they are always the page's own
-       * color. WebKit reads a fixed element at an edge when it is at least 90% of the viewport wide
-       * and more than 10px tall, and reads it again whenever it repaints. It reads the color value,
-       * not the pixels, so the strip can be faint: opacity below 0.1 is skipped, 0.1 is the floor.
-       * The blur softens the strip's inner edge; each strip starts past the screen's edges so the
-       * blur's fade there is off screen. The strips sit above the header because WebKit reads
-       * whatever is topmost at the center of the edge.
-       */
-      .edge {
-        --bleed: 12px;
-        --blur: 6px;
-        position: fixed;
-        left: calc(-1 * var(--blur));
-        right: calc(-1 * var(--blur));
-        z-index: 2;
-        pointer-events: none;
-        background-color: var(--day-top);
-        opacity: 0.1;
-        filter: blur(var(--blur));
-      }
-
-      .edge-top {
-        top: calc(-1 * var(--bleed));
-        height: calc(max(12px, env(safe-area-inset-top)) + var(--bleed));
-      }
-
-      .edge-bottom {
-        bottom: calc(-1 * var(--bleed));
-        height: calc(max(12px, env(safe-area-inset-bottom)) + var(--bleed));
-      }
-
-      @supports (animation-timeline: scroll()) {
-        .edge {
-          animation: page-color linear both;
-          animation-timeline: scroll(root);
-        }
       }
     </style>
   </head>
@@ -79,9 +38,9 @@
 
     <div class="credits" id="credits" popover>
       <nav class="pages" aria-label="Demo pages">
-        <a href="../">Solid color</a>
-        <a href="../gradient.html">Gradient</a>
-        <a href="edge-strips.html" aria-current="page">Edge strips</a>
+        <a href="./">Viewport cover</a>
+        <a href="viewport-auto.html" aria-current="page">Viewport auto</a>
+        <a href="gradient.html">Gradient</a>
       </nav>
       <p class="byline">Demo by <a href="https://mrtipton.com">mrtipton.com</a></p>
     </div>
@@ -91,7 +50,7 @@
     </svg>
 
     <main class="field">
-      <h1 class="visually-hidden">viewport-fit=cover demo: edge strips</h1>
+      <h1 class="visually-hidden">viewport-fit=cover demo: viewport auto</h1>
 
       <svg class="shape" style="--x: 10%; --y: 5%; --s: 6rem" viewBox="0 0 100 100" aria-hidden="true">
         <circle cx="50" cy="50" r="46" />
