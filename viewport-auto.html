@@ -19,6 +19,47 @@
       html {
         background-color: var(--day-top);
       }
+
+      /*
+       * Two faint strips, one per screen edge. Without viewport-fit=cover the page stops short of the
+       * bars and Safari paints them itself, from a fixed element touching the edge when it is at least
+       * 90% of the viewport wide and more than 10px tall, read again whenever it repaints. It reads the
+       * color value, not the pixels, so the strips can be faint: opacity 0.1 is the floor, below it they
+       * are skipped. They run the same scroll-driven keyframes as html, so they are always the page's
+       * own color, and the blur softens their inner edge. Each strip starts past the screen's edges so
+       * the blur's fade there is off screen, and sits above the header because Safari reads whatever is
+       * topmost at the center of the edge. On the cover page the same strips make Safari fill the bars
+       * with a flat color that hides the page behind them, so only this page has them.
+       */
+      .edge {
+        --bleed: 12px;
+        --blur: 6px;
+        position: fixed;
+        left: calc(-1 * var(--blur));
+        right: calc(-1 * var(--blur));
+        z-index: 2;
+        pointer-events: none;
+        background-color: var(--day-top);
+        opacity: 0.1;
+        filter: blur(var(--blur));
+      }
+
+      .edge-top {
+        top: calc(-1 * var(--bleed));
+        height: calc(max(12px, env(safe-area-inset-top)) + var(--bleed));
+      }
+
+      .edge-bottom {
+        bottom: calc(-1 * var(--bleed));
+        height: calc(max(12px, env(safe-area-inset-bottom)) + var(--bleed));
+      }
+
+      @supports (animation-timeline: scroll()) {
+        .edge {
+          animation: page-color linear both;
+          animation-timeline: scroll(root);
+        }
+      }
     </style>
   </head>
   <body>
