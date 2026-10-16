@@ -105,6 +105,22 @@
         white-space: nowrap;
       }
 
+      /*
+       * One large shape pinned to the centre of the screen while the white shapes scroll over it. It
+       * is fixed but clear of the screen's edges, so it shouldn't change Safari's bars.
+       */
+      .anchor {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: min(80vw, 26rem);
+        height: auto;
+        translate: -50% -50%;
+        fill: #000;
+        opacity: 0.5;
+        pointer-events: none;
+      }
+
       /* The scroll: white shapes scattered down a tall field. */
       .field {
         position: relative;
@@ -142,6 +158,10 @@
         </svg>
       </button>
     </header>
+
+    <svg class="anchor" viewBox="0 0 100 100" aria-hidden="true">
+      <path d="M50 3 90.7 26.5v47L50 97 9.3 73.5v-47Z" />
+    </svg>
 
     <main class="field">
       <h1 class="visually-hidden">viewport-fit=cover demo</h1>
