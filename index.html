@@ -26,7 +26,9 @@
        * The sky is the page's own background, not a fixed layer. Safari tints its toolbars from fixed
        * elements touching the screen's edges, so a fixed full-screen background turns the bars solid.
        * Painted on the root instead, it scrolls with the page and shows through behind the toolbars:
-       * day for the first screen (lvh, the screen with the toolbars hidden), night by the end.
+       * day for the first screen (lvh, the screen with the toolbars hidden), night by the end. The
+       * gradient would paint the same from body; the solid colour under it belongs on html, which is
+       * the page's colour once html has any background.
        */
       html {
         background: var(--day-top)
