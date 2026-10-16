@@ -21,7 +21,7 @@ top of the page to night at the bottom.
 
    ```css
    html {
-     background: #2f6bff linear-gradient(#2f6bff, #e6a3c3 100lvh, #120a2a 75%, #2b1550) no-repeat;
+     background: #2f6bff linear-gradient(#2f6bff, #ff8ac2 100lvh, #120a2a 75%, #2b1550) no-repeat;
    }
    ```
 
