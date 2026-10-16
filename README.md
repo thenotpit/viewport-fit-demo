@@ -3,8 +3,8 @@
 One static page showing how to draw a page edge to edge on iPhone, behind Safari's toolbars, with
 no scripts sampling or animating the toolbar's colour.
 
-Open it on an iPhone and scroll: the sky runs behind the toolbars, and fades from day to night as
-you go.
+Open it on an iPhone and scroll: the sky runs behind the status bar and the toolbar, from day at the
+top of the page to night at the bottom.
 
 ## How it works
 
@@ -15,21 +15,21 @@ you go.
    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
    ```
 
-2. **`lvh`** (large viewport height: the screen with the toolbars hidden) sizes the fixed sky, so it
-   reaches the bottom of the screen whatever the toolbars are doing. A small overscan past `lvh`
-   carries it on under iOS's floating bottom bar.
+2. **The sky is the page's own background**, a gradient painted on `html`, and **`lvh`** (the screen
+   with the toolbars hidden) sets where day ends, so the first screen is the full day gradient.
 
    ```css
-   .sky {
-     position: fixed;
-     top: 0;
-     height: calc(100lvh + 6rem);
+   html {
+     background: #2b1550 linear-gradient(#2f6bff, #e6a3c3 100lvh, #120a2a 75%, #2b1550) no-repeat;
    }
    ```
 
 3. **`env(safe-area-inset-*)`** keeps the header's icons clear of the notch and rounded corners,
    now that the page reaches them.
 
-The day-to-night fade is a CSS scroll-driven animation (`animation-timeline: scroll(root)`), so the
-browser runs it alongside scrolling. Browsers without scroll timelines get the same fade from a few
-lines of script.
+## Why nothing is `position: fixed`
+
+Safari tints its toolbars from fixed elements touching the screen's edges. A fixed, full-screen
+background layer counts, so Safari turns its bars solid in that layer's colour and the page stops
+showing through. That heuristic is also what "colour strips at the top and bottom" tricks lean on.
+With no fixed elements at the edges, Safari shows the page itself behind its bars.

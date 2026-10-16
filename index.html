@@ -14,11 +14,6 @@
         --day-bottom: #e6a3c3;
         --night-top: #120a2a;
         --night-bottom: #2b1550;
-        /*
-         * How far the sky runs past the large viewport. iOS draws a little of the page behind its
-         * floating toolbar beyond 100lvh, so the sky carries on underneath it.
-         */
-        --overscan: 6rem;
       }
 
       *,
@@ -27,9 +22,21 @@
         box-sizing: border-box;
       }
 
+      /*
+       * The sky is the page's own background, not a fixed layer. Safari tints its toolbars from fixed
+       * elements touching the screen's edges, so a fixed full-screen background turns the bars solid.
+       * Painted on the root instead, it scrolls with the page and shows through behind the toolbars:
+       * day for the first screen (lvh, the screen with the toolbars hidden), night by the end.
+       */
       html {
-        /* The canvas, seen if the page is pulled past either end. */
-        background: var(--night-bottom);
+        background: var(--night-bottom)
+          linear-gradient(
+            var(--day-top),
+            var(--day-bottom) 100lvh,
+            var(--night-top) 75%,
+            var(--night-bottom)
+          )
+          no-repeat;
       }
 
       body {
@@ -39,45 +46,11 @@
       }
 
       /*
-       * The sky: fixed, so it never scrolls, and sized with lvh (the viewport with the toolbars
-       * hidden) plus the overscan, so it reaches the bottom of the screen whatever the toolbars do.
+       * Clear of the notch and the rounded corners: viewport-fit=cover makes these insets real. It
+       * scrolls away with the page, for the same reason the sky isn't fixed.
        */
-      .sky {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: calc(100lvh + var(--overscan));
-        z-index: -1;
-        background: linear-gradient(var(--day-top), var(--day-bottom));
-      }
-
-      /* Night is a second sky over the first, faded in as the page scrolls. */
-      .sky.night {
-        background: linear-gradient(var(--night-top), var(--night-bottom));
-        opacity: 0;
-      }
-
-      /*
-       * Tied to the scroll position by the browser itself, off the main thread, so it stays smooth.
-       * Guarded: where scroll timelines are not supported, the script below drives it instead.
-       */
-      @supports (animation-timeline: scroll()) {
-        .sky.night {
-          animation: nightfall linear both;
-          animation-timeline: scroll(root);
-        }
-      }
-
-      @keyframes nightfall {
-        to {
-          opacity: 1;
-        }
-      }
-
-      /* Clear of the notch and the rounded corners: viewport-fit=cover makes these insets real. */
       .bar {
-        position: fixed;
+        position: absolute;
         top: 0;
         left: 0;
         right: 0;
@@ -138,9 +111,6 @@
     </style>
   </head>
   <body>
-    <div class="sky" aria-hidden="true"></div>
-    <div class="sky night" aria-hidden="true"></div>
-
     <header class="bar">
       <svg viewBox="0 0 32 32" role="img" aria-label="Demo">
         <path fill="#fff" d="M16 2 30 16 16 30 2 16Z M16 9 9 16l7 7 7-7Z" fill-rule="evenodd" />
@@ -205,25 +175,5 @@
       </svg>
     </main>
 
-    <script>
-      // Fallback for browsers without CSS scroll timelines: the same fade, from the scroll position.
-      if (!CSS.supports('animation-timeline: scroll()')) {
-        const night = document.querySelector('.sky.night');
-        let queued = false;
-        const update = () => {
-          queued = false;
-          const range = document.documentElement.scrollHeight - innerHeight;
-          night.style.opacity = range > 0 ? Math.min(1, scrollY / range) : 0;
-        };
-        const request = () => {
-          if (queued) return;
-          queued = true;
-          requestAnimationFrame(update);
-        };
-        addEventListener('scroll', request, { passive: true });
-        addEventListener('resize', request);
-        update();
-      }
-    </script>
   </body>
 </html>
