@@ -15,21 +15,27 @@ top of the page to night at the bottom.
    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
    ```
 
-2. **The sky is the page's own background**, a gradient painted on `html`, and **`lvh`** (the screen
-   with the toolbars hidden) sets where day ends, so the first screen is the full day gradient.
+2. **The sky is the page's own background**, a gradient painted on `body` over the sky's blue, with
+   `html` set to the same blue. **`lvh`** (the screen with the toolbars hidden) sets where day ends,
+   so the first screen is the full day gradient.
 
    ```css
    html {
-     background: #2b1550 linear-gradient(#2f6bff, #e6a3c3 100lvh, #120a2a 75%, #2b1550) no-repeat;
+     background: #2f6bff;
+   }
+
+   body {
+     background: #2f6bff linear-gradient(#2f6bff, #e6a3c3 100lvh, #120a2a 75%, #2b1550) no-repeat;
    }
    ```
 
-3. **`env(safe-area-inset-*)`** keeps the header's icons clear of the notch and rounded corners,
-   now that the page reaches them.
+3. **`env(safe-area-inset-*)`** keeps the pinned header's icons clear of the notch and rounded
+   corners, now that the page reaches them.
 
-## Why nothing is `position: fixed`
+## Why the background isn't `position: fixed`
 
 Safari tints its toolbars from fixed elements touching the screen's edges. A fixed, full-screen
 background layer counts, so Safari turns its bars solid in that layer's colour and the page stops
 showing through. That heuristic is also what "colour strips at the top and bottom" tricks lean on.
-With no fixed elements at the edges, Safari shows the page itself behind its bars.
+With the background in the page instead, Safari shows the page itself behind its bars. The pinned
+header has no background of its own.

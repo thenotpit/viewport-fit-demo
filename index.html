@@ -25,11 +25,19 @@
       /*
        * The sky is the page's own background, not a fixed layer. Safari tints its toolbars from fixed
        * elements touching the screen's edges, so a fixed full-screen background turns the bars solid.
-       * Painted on the root instead, it scrolls with the page and shows through behind the toolbars:
-       * day for the first screen (lvh, the screen with the toolbars hidden), night by the end.
+       * Painted on the body instead, it scrolls with the page and shows through behind the toolbars:
+       * day for the first screen (lvh, the screen with the toolbars hidden), night by the end. Both
+       * elements are the sky's blue underneath, so anything Safari reads from them is that blue.
        */
       html {
-        background: var(--night-bottom)
+        background: var(--day-top);
+      }
+
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, sans-serif;
+        color: #fff;
+        background: var(--day-top)
           linear-gradient(
             var(--day-top),
             var(--day-bottom) 100lvh,
@@ -39,18 +47,9 @@
           no-repeat;
       }
 
-      body {
-        margin: 0;
-        font-family: system-ui, -apple-system, sans-serif;
-        color: #fff;
-      }
-
-      /*
-       * Clear of the notch and the rounded corners: viewport-fit=cover makes these insets real. It
-       * scrolls away with the page, for the same reason the sky isn't fixed.
-       */
+      /* Pinned, and clear of the notch and the rounded corners: viewport-fit=cover makes these insets real. */
       .bar {
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
         right: 0;
