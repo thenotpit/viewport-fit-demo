@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!--
+      viewport-fit=cover lets the page draw edge to edge: into the notch and home-indicator areas,
+      and behind Safari's toolbars, instead of being letterboxed inside them.
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>viewport-fit=cover demo</title>
+    <style>
+      :root {
+        --day-top: #2f6bff;
+        --day-bottom: #e6a3c3;
+        --night-top: #120a2a;
+        --night-bottom: #2b1550;
+        /*
+         * How far the sky runs past the large viewport. iOS draws a little of the page behind its
+         * floating toolbar beyond 100lvh, so the sky carries on underneath it.
+         */
+        --overscan: 6rem;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        /* The canvas, seen if the page is pulled past either end. */
+        background: var(--night-bottom);
+      }
+
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, sans-serif;
+        color: #fff;
+      }
+
+      /*
+       * The sky: fixed, so it never scrolls, and sized with lvh (the viewport with the toolbars
+       * hidden) plus the overscan, so it reaches the bottom of the screen whatever the toolbars do.
+       */
+      .sky {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: calc(100lvh + var(--overscan));
+        z-index: -1;
+        background: linear-gradient(var(--day-top), var(--day-bottom));
+      }
+
+      /* Night is a second sky over the first, faded in as the page scrolls. */
+      .sky.night {
+        background: linear-gradient(var(--night-top), var(--night-bottom));
+        opacity: 0;
+      }
+
+      /*
+       * Tied to the scroll position by the browser itself, off the main thread, so it stays smooth.
+       * Guarded: where scroll timelines are not supported, the script below drives it instead.
+       */
+      @supports (animation-timeline: scroll()) {
+        .sky.night {
+          animation: nightfall linear both;
+          animation-timeline: scroll(root);
+        }
+      }
+
+      @keyframes nightfall {
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* Clear of the notch and the rounded corners: viewport-fit=cover makes these insets real. */
+      .bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: max(1rem, env(safe-area-inset-top)) max(1.25rem, env(safe-area-inset-right)) 1rem
+          max(1.25rem, env(safe-area-inset-left));
+      }
+
+      .bar svg {
+        display: block;
+        width: 2rem;
+        height: 2rem;
+      }
+
+      .menu {
+        padding: 0;
+        border: 0;
+        background: none;
+        color: inherit;
+      }
+
+      .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
+
+      /* The scroll: white shapes scattered down a tall field. */
+      .field {
+        position: relative;
+        height: 520svh;
+        overflow-x: clip;
+      }
+
+      .shape {
+        position: absolute;
+        left: var(--x);
+        top: var(--y);
+        width: var(--s);
+        height: var(--s);
+        rotate: var(--r, 0deg);
+        fill: #fff;
+        stroke: #fff;
+        stroke-width: 6;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .shape .line {
+        fill: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sky" aria-hidden="true"></div>
+    <div class="sky night" aria-hidden="true"></div>
+
+    <header class="bar">
+      <svg viewBox="0 0 32 32" role="img" aria-label="Demo">
+        <path fill="#fff" d="M16 2 30 16 16 30 2 16Z M16 9 9 16l7 7 7-7Z" fill-rule="evenodd" />
+      </svg>
+      <button type="button" class="menu" aria-label="Menu">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M5 9h22M5 16h22M5 23h22" stroke="#fff" stroke-width="2.5" stroke-linecap="round" />
+        </svg>
+      </button>
+    </header>
+
+    <main class="field">
+      <h1 class="visually-hidden">viewport-fit=cover demo</h1>
+
+      <svg class="shape" style="--x: 10%; --y: 5%; --s: 6rem" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="46" />
+      </svg>
+      <svg class="shape" style="--x: 60%; --y: 9%; --s: 9rem" viewBox="0 0 100 100" aria-hidden="true">
+        <circle class="line" cx="50" cy="50" r="44" />
+      </svg>
+      <svg class="shape" style="--x: 30%; --y: 17%; --s: 7rem" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 6 96 90H4Z" />
+      </svg>
+      <svg class="shape" style="--x: 72%; --y: 24%; --s: 5rem; --r: 18deg" viewBox="0 0 100 100" aria-hidden="true">
+        <rect x="6" y="6" width="88" height="88" rx="18" />
+      </svg>
+      <svg class="shape" style="--x: 12%; --y: 29%; --s: 4rem" viewBox="0 0 100 100" aria-hidden="true">
+        <path class="line" d="M50 10v80M10 50h80" stroke-width="16" />
+      </svg>
+      <svg class="shape" style="--x: 50%; --y: 34%; --s: 8rem" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 4l13.5 27.4 30.2 4.4-21.9 21.3 5.2 30.1L50 73 23 87.2l5.2-30.1L6.3 35.8l30.2-4.4Z" />
+      </svg>
+      <svg class="shape" style="--x: 82%; --y: 40%; --s: 3rem" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="46" />
+      </svg>
+      <svg class="shape" style="--x: 16%; --y: 44%; --s: 7rem; --r: 30deg" viewBox="0 0 100 100" aria-hidden="true">
+        <rect class="line" x="8" y="8" width="84" height="84" />
+      </svg>
+      <svg class="shape" style="--x: 46%; --y: 52%; --s: 10rem" viewBox="0 0 100 100" aria-hidden="true">
+        <path class="line" d="M6 50l11-14 11 14 11-14 11 14 11-14 11 14 11-14 11 14" />
+      </svg>
+      <svg class="shape" style="--x: 70%; --y: 58%; --s: 6rem; --r: -12deg" viewBox="0 0 100 100" aria-hidden="true">
+        <path class="line" d="M50 8 92 86H8Z" />
+      </svg>
+      <svg class="shape" style="--x: 8%; --y: 63%; --s: 8rem" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M4 70a46 46 0 0 1 92 0Z" />
+      </svg>
+      <svg class="shape" style="--x: 40%; --y: 69%; --s: 4rem" viewBox="0 0 100 100" aria-hidden="true">
+        <circle class="line" cx="50" cy="50" r="40" stroke-width="10" />
+      </svg>
+      <svg class="shape" style="--x: 64%; --y: 75%; --s: 7rem" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 4 96 50 50 96 4 50Z" />
+      </svg>
+      <svg class="shape" style="--x: 18%; --y: 82%; --s: 10rem" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="46" />
+      </svg>
+      <svg class="shape" style="--x: 78%; --y: 88%; --s: 5rem; --r: 45deg" viewBox="0 0 100 100" aria-hidden="true">
+        <path class="line" d="M50 10v80M10 50h80" stroke-width="14" />
+      </svg>
+      <svg class="shape" style="--x: 42%; --y: 93%; --s: 4rem" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 4l13.5 27.4 30.2 4.4-21.9 21.3 5.2 30.1L50 73 23 87.2l5.2-30.1L6.3 35.8l30.2-4.4Z" />
+      </svg>
+    </main>
+
+    <script>
+      // Fallback for browsers without CSS scroll timelines: the same fade, from the scroll position.
+      if (!CSS.supports('animation-timeline: scroll()')) {
+        const night = document.querySelector('.sky.night');
+        let queued = false;
+        const update = () => {
+          queued = false;
+          const range = document.documentElement.scrollHeight - innerHeight;
+          night.style.opacity = range > 0 ? Math.min(1, scrollY / range) : 0;
+        };
+        const request = () => {
+          if (queued) return;
+          queued = true;
+          requestAnimationFrame(update);
+        };
+        addEventListener('scroll', request, { passive: true });
+        addEventListener('resize', request);
+        update();
+      }
+    </script>
+  </body>
+</html>
