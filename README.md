@@ -15,11 +15,11 @@ top of the page to night at the bottom.
    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
    ```
 
-2. **The sky is the page's own background**, a gradient painted on `body`. **`lvh`** (the screen
+2. **The sky is the page's own background**, a gradient painted on `html`. **`lvh`** (the screen
    with the toolbars hidden) sets where day ends, so the first screen is the full day gradient.
 
    ```css
-   body {
+   html {
      background: linear-gradient(#2f6bff, #e6a3c3 100lvh, #120a2a 75%, #2b1550) no-repeat;
    }
    ```
