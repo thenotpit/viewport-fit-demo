@@ -127,6 +127,21 @@ The page has no scripts. The menu button opens its panel with the HTML popover A
 (`popovertarget`), which also handles closing it on an outside tap or Escape, and the panel's
 animation is a CSS transition with `@starting-style`.
 
+## Lab
+
+In-app browsers draw an opaque bar of their own above the page. Safari's bars read the page's
+background color live; an in-app bar reads a color once at load and then stops. Two pages under
+`lab/`, not in the menu, each change one thing about the solid color page to find out what that
+bar will follow:
+
+- **`lab/edge-strips.html`**: a thin fixed strip at each screen edge, running the same
+  scroll-driven keyframes as `html`. No script. WebKit samples a fixed element touching an edge
+  when it is at least 90% of the viewport wide and over 10px tall, and samples it again whenever
+  it repaints.
+- **`lab/theme-color.html`**: a `theme-color` meta tag that a small script keeps equal to `html`'s
+  animated background color, read back from computed style. The control: this is the one input
+  an in-app bar is known to follow, at the cost of a script running on scroll.
+
 ## What we saw on iPhone
 
 | Page setup | Bars and the area past each end |
