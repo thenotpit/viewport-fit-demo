@@ -130,17 +130,20 @@ animation is a CSS transition with `@starting-style`.
 ## Lab
 
 In-app browsers draw an opaque bar of their own above the page. Safari's bars read the page's
-background color live; an in-app bar reads a color once at load and then stops. Two pages under
-`lab/`, the last two in the menu, each change one thing about the solid color page to find out what that
-bar will follow:
+background color live; an in-app bar reads a color once at load and then stops. One page under
+`lab/`, the last in the menu, changes two things about the solid color page to see what the bars
+make of a fixed element at the screen's edge:
 
-- **`lab/edge-strips.html`**: a thin fixed strip at each screen edge, running the same
-  scroll-driven keyframes as `html`. No script. WebKit samples a fixed element touching an edge
-  when it is at least 90% of the viewport wide and over 10px tall, and samples it again whenever
-  it repaints.
-- **`lab/theme-color.html`**: a `theme-color` meta tag that a small script keeps equal to `html`'s
-  animated background color, read back from computed style. The control: this is the one input
-  an in-app bar is known to follow, at the cost of a script running on scroll.
+- **`lab/edge-strips.html`**: a thin fixed strip at each screen edge, running the same scroll-driven
+  keyframes as `html`. No script. WebKit samples a fixed element touching an edge when it is at
+  least 90% of the viewport wide and over 10px tall, and samples it again whenever it repaints. The
+  page drops `viewport-fit=cover`, so it sits inside the safe areas and whatever Safari paints behind
+  its bars is Safari's own reading of the strips, not the page showing through.
+
+What we saw in X's in-app browser: a `theme-color` meta tag kept equal to `html`'s color by a
+script had no effect at all, and the strips did move the bar, but only once the scroll came to
+rest. WebKit delivers the strip's new color on every frame of the scroll; the in-app browser
+applies it when scrolling settles, and nothing on the page changes that timing.
 
 ## What we saw on iPhone
 

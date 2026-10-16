@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <!--
-      viewport-fit=cover lets the page draw edge to edge: into the notch and home-indicator areas,
-      and behind Safari's toolbars, instead of being letterboxed inside them.
+      No viewport-fit=cover here: the page stays inside the safe areas, so what Safari paints behind
+      its bars is Safari's own choice, not the page showing through.
     -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>viewport-fit=cover demo: edge strips</title>
     <link rel="stylesheet" href="../styles.css" />
     <style>
@@ -20,10 +20,11 @@
       }
 
       /*
-       * Lab: does the in-app browser's bar follow a fixed element touching the screen's edge?
-       * Two thin strips, one per edge, run the same scroll-driven keyframes as html, so they are
-       * always the page's own color. WebKit samples a fixed element at the edge only if it is at
-       * least 90% of the viewport wide and more than 10px tall, and re-samples when it repaints.
+       * Lab: what do Safari's bars do with a fixed element touching the screen's edge? Two thin
+       * strips, one per edge, run the same scroll-driven keyframes as html, so they are always the
+       * page's own color. WebKit samples a fixed element at the edge only if it is at least 90% of
+       * the viewport wide and more than 10px tall, and re-samples when it repaints. Without
+       * viewport-fit=cover the safe-area insets are zero, so each strip is 12px.
        */
       .edge {
         position: fixed;
@@ -72,7 +73,6 @@
         <a href="../">Solid color</a>
         <a href="../gradient.html">Gradient</a>
         <a href="edge-strips.html" aria-current="page">Edge strips</a>
-        <a href="theme-color.html">Theme color</a>
       </nav>
       <p class="byline">Demo by <a href="https://mrtipton.com">mrtipton.com</a></p>
     </div>
