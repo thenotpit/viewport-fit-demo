@@ -6,6 +6,14 @@ HTML and CSS alone, with no scripts sampling or animating the toolbar's colour.
 Open it on an iPhone and scroll: the sky runs behind the status bar and the toolbar, from day at the
 top of the page to night at the bottom.
 
+There are two pages, switched from the menu:
+
+- **Gradient** (`index.html`): a day gradient on the page, over a solid colour that follows the scroll.
+- **Solid colour** (`solid.html`): no gradient. The whole page is that one colour, fading from blue to
+  night as you scroll, so the page and Safari's bars are always exactly the same colour.
+
+Everything they share is in `styles.css`; each page sets only its own background on `html`.
+
 ## How it works
 
 1. **`viewport-fit=cover`** in the viewport meta tag lets the page lay out into the notch and

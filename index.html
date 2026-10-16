@@ -7,21 +7,9 @@
       and behind Safari's toolbars, instead of being letterboxed inside them.
     -->
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>viewport-fit=cover demo</title>
+    <title>viewport-fit=cover demo: gradient</title>
+    <link rel="stylesheet" href="styles.css" />
     <style>
-      :root {
-        --day-top: #2f6bff;
-        --day-bottom: #ff8ac2;
-        --night-top: #120a2a;
-        --night-bottom: #2b1550;
-      }
-
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-      }
-
       /*
        * The sky is the page's own background, not a fixed layer. Safari tints its toolbars from fixed
        * elements touching the screen's edges, so a fixed full-screen background turns the bars solid.
@@ -40,178 +28,6 @@
           )
           no-repeat;
       }
-
-      /*
-       * The solid colour is what Safari shows where it needs one colour: the strip behind the status
-       * bar, and past either end of the page. One colour can't match both ends, so it follows the
-       * scroll from the sky's blue at the top to the night at the bottom. Where scroll timelines
-       * aren't supported, it stays blue.
-       */
-      @supports (animation-timeline: scroll()) {
-        html {
-          animation: page-colour linear both;
-          animation-timeline: scroll(root);
-        }
-      }
-
-      @keyframes page-colour {
-        from {
-          background-color: var(--day-top);
-        }
-        to {
-          background-color: var(--night-bottom);
-        }
-      }
-
-      body {
-        margin: 0;
-        font-family: system-ui, -apple-system, sans-serif;
-        color: #fff;
-      }
-
-      /* Pinned, and clear of the notch and the rounded corners: viewport-fit=cover makes these insets real. */
-      .bar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 1;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: max(1rem, env(safe-area-inset-top)) max(1.25rem, env(safe-area-inset-right)) 1rem
-          max(1.25rem, env(safe-area-inset-left));
-      }
-
-      .bar svg {
-        display: block;
-        width: 2rem;
-        height: 2rem;
-      }
-
-      .menu {
-        padding: 0;
-        border: 0;
-        background: none;
-        color: inherit;
-        cursor: pointer;
-      }
-
-      /*
-       * The credits panel: a popover the menu button opens and closes with no script. Tapping
-       * outside it or pressing Escape closes it too. It springs out of the button's corner, and
-       * @starting-style gives it a state to animate in from.
-       */
-      .credits {
-        position: fixed;
-        inset: auto;
-        top: calc(max(1rem, env(safe-area-inset-top)) + 2.75rem);
-        right: max(1.25rem, env(safe-area-inset-right));
-        margin: 0;
-        padding: 1.1rem 1.4rem;
-        border: 0;
-        border-radius: 1.25rem;
-        background: #000;
-        color: #fff;
-        font-size: 1rem;
-        box-shadow: 0 1rem 2.5rem rgb(0 0 0 / 0.35);
-        transform-origin: top right;
-        /* The closed state, which it also leaves to. */
-        opacity: 0;
-        scale: 0.6;
-        translate: 0.5rem -0.75rem;
-        transition:
-          opacity 0.18s ease,
-          scale 0.42s cubic-bezier(0.2, 1.35, 0.4, 1),
-          translate 0.42s cubic-bezier(0.2, 1.35, 0.4, 1),
-          display 0.42s allow-discrete,
-          overlay 0.42s allow-discrete;
-      }
-
-      .credits:popover-open {
-        opacity: 1;
-        scale: 1;
-        translate: 0 0;
-      }
-
-      @starting-style {
-        .credits:popover-open {
-          opacity: 0;
-          scale: 0.6;
-          translate: 0.5rem -0.75rem;
-        }
-      }
-
-      /*
-       * A popover brings a ::backdrop: a transparent layer pinned over the whole screen. That makes it
-       * a fixed element touching every edge, which Safari turns into solid bars. The panel needs no
-       * backdrop, so it doesn't get one.
-       */
-      .credits::backdrop {
-        display: none;
-      }
-
-      .credits a {
-        color: inherit;
-        font-weight: 600;
-        text-underline-offset: 0.2em;
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .credits {
-          transition: none;
-        }
-      }
-
-      .visually-hidden {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        overflow: hidden;
-        clip-path: inset(50%);
-        white-space: nowrap;
-      }
-
-      /*
-       * One large shape pinned to the centre of the screen while the white shapes scroll over it. It
-       * is fixed but clear of the screen's edges, so it shouldn't change Safari's bars.
-       */
-      .anchor {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        width: min(80vw, 26rem);
-        height: auto;
-        translate: -50% -50%;
-        fill: #000;
-        opacity: 0.5;
-        pointer-events: none;
-      }
-
-      /* The scroll: white shapes scattered down a tall field. */
-      .field {
-        position: relative;
-        height: 520svh;
-        overflow-x: clip;
-      }
-
-      .shape {
-        position: absolute;
-        left: var(--x);
-        top: var(--y);
-        width: var(--s);
-        height: var(--s);
-        rotate: var(--r, 0deg);
-        fill: #fff;
-        stroke: #fff;
-        stroke-width: 6;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-      }
-
-      .shape .line {
-        fill: none;
-      }
     </style>
   </head>
   <body>
@@ -227,7 +43,11 @@
     </header>
 
     <div class="credits" id="credits" popover>
-      Demo by <a href="https://mrtipton.com">mrtipton.com</a>
+      <nav class="pages" aria-label="Demo pages">
+        <a href="./" aria-current="page">Gradient</a>
+        <a href="solid.html">Solid colour</a>
+      </nav>
+      <p class="byline">Demo by <a href="https://mrtipton.com">mrtipton.com</a></p>
     </div>
 
     <svg class="anchor" viewBox="0 0 100 100" aria-hidden="true">
@@ -235,7 +55,7 @@
     </svg>
 
     <main class="field">
-      <h1 class="visually-hidden">viewport-fit=cover demo</h1>
+      <h1 class="visually-hidden">viewport-fit=cover demo: gradient</h1>
 
       <svg class="shape" style="--x: 10%; --y: 5%; --s: 6rem" viewBox="0 0 100 100" aria-hidden="true">
         <circle cx="50" cy="50" r="46" />
