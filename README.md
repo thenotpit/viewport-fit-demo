@@ -40,6 +40,12 @@ html {
 }
 ```
 
+**Why CSS and not a scroll listener.** On iPhone, scrolling runs on its own thread, and scroll
+events reach JavaScript after the page has already moved. A script that sets a color on each event
+is always a frame or more behind the content, every event costs a style recalculation and a repaint,
+and any hiccup on the main thread shows up as a stutter in the bars. A scroll-driven animation is
+tied to the scroll position by the browser itself: no event, no script, nothing to fall behind.
+
 **Don't pin a background.** A `position: fixed` layer touching the screen's edges makes Safari fill
 the bars with a flat color and the page stops showing through. That includes layers you didn't add:
 a popover's `::backdrop` did it here until it was switched off with `display: none`.
