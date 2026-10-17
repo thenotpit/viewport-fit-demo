@@ -156,13 +156,14 @@ runs slightly ahead until the toolbar collapses.
 
 ### Pink and the bars' text
 
-Safari switches a tinted bar to dark text and icons once the tint is bright enough. The rule for
-that is in Safari rather than WebKit, but WebKit's own rule for the pull-to-refresh control is a
-greyscale value of 0.6, and the blue, at about 0.47, keeps light text while the pink, at about
-0.70, flips it, and so did a pink at 0.57. On the gradient page the pink stop in `html`'s keyframes
-is therefore a custom property: the top strip keeps the gradient's pink, and `html`, which is
-what desktop Safari tints from, takes `#b45f88`, about 0.48. The phone's bars come from the
-strips and keep the brighter pink.
+Safari switches a tinted bar to dark text and icons once the tint is bright enough. The rule is in
+Safari rather than WebKit, and a simple brightness cut doesn't fit what we saw: a pink with a
+greyscale value of 0.48 flipped the bar while the blue at 0.47 did not. White text's contrast
+against the tint does fit, with 4.5:1 as the line: the blue gives 4.51, that pink 4.25, the
+gradient's pink 2.17. On the gradient page the pink stop in `html`'s keyframes is therefore a
+custom property: the top strip keeps the gradient's pink, and `html`, which is what desktop
+Safari tints from, takes `#964f71`, a contrast of 5.7. The phone's bars come from the strips
+and keep the brighter pink.
 
 ### The edge strips
 

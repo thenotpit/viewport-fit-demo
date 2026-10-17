@@ -51,13 +51,14 @@
        */
       /*
        * The keyframes' pink stop is a custom property, so html and the top strip share the keyframes
-       * but not the pink. The strip keeps the gradient's pink; html takes a darker one, #b45f88, a
-       * greyscale value of about 0.48, just under the blue's, because at the gradient's pink desktop
-       * Safari switches its tab bar to dark text and icons. The phone's bars come from the strips and
-       * keep the brighter pink.
+       * but not the pink. The strip keeps the gradient's pink; html takes a darker one, #964f71,
+       * because at the gradient's pink desktop Safari switches its tab bar to dark text and icons. The
+       * line looks like white text's contrast against the tint, 4.5:1: the blue passes at 4.51, a pink
+       * at 4.25 flipped, and this one is 5.7. The phone's bars come from the strips and keep the
+       * brighter pink.
        */
       html {
-        --pink: #b45f88;
+        --pink: #964f71;
       }
 
       .edge-top {
