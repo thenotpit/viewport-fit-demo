@@ -71,14 +71,16 @@ run the same keyframes as `html`. What a strip can be, found by changing one thi
 - Can sit under other elements, with a catch: if something else is on top at the center of the
   edge, Safari uses `html`'s background color for that bar instead of the strip. On a solid page
   the two match and you won't notice. On the gradient page they don't, so the strips sit above the
-  header on touch devices.
+  header on phones.
 
-**Safari on the Mac**
+**Safari on the Mac and the iPad**
 
 - Reads a fixed edge once, before the first scroll, and holds it. A strip it can see locks the tab
-  bar to the first color.
-- Keep the strips under something at the top edge, and the Mac ignores them and follows `html`'s
-  background color instead, live. The strips go above the header only inside `@media (hover: none)`.
+  bar to the first color. WebKit files the iPad with the Mac here, not the iPhone, and an iPad
+  confirmed it: `viewport-fit=cover` works, and strips it can see lock the bar.
+- Keep the strips under something at the top edge, and the Mac and iPad ignore them and follow
+  `html`'s background color instead, live. The strips go above the header only on phones: touch
+  devices whose shorter side is under 500px.
 
 **X's in-app browser**
 

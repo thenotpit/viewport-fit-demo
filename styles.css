@@ -48,9 +48,9 @@
  * What Safari reads is whatever is topmost at the center of the edge. The header covers that point
  * at the top, and a header with no color makes Safari fall back to html's background color for the
  * top bar. On a solid page that is the strip's color anyway; on the gradient page it is not. So on
- * touch devices the strips sit above the header. On the Mac they stay under it, and that is
- * wanted: the Mac reads a fixed edge's color once, before the first scroll, and holds it, so a
- * strip it can see would lock its tab tint to the first color, while html's color it follows.
+ * phones the strips sit above the header. On the Mac and the iPad they stay under it, and that is
+ * wanted: both read a fixed edge's color once, before the first scroll, and hold it, so a strip
+ * they can see would lock the tab tint to the first color, while html's color they follow.
  */
 .edge {
   position: fixed;
@@ -80,7 +80,12 @@
   }
 }
 
-@media (hover: none) {
+/*
+ * Phones only: touch, and a shorter side under 500px in either orientation. The iPad is a touch
+ * device too, but WebKit files it with the Mac, which reads a fixed edge once and holds it, so the
+ * iPad keeps the strips under the header and follows html's color like the Mac does.
+ */
+@media (hover: none) and (max-width: 500px), (hover: none) and (max-height: 500px) {
   .edge {
     z-index: 2;
   }
