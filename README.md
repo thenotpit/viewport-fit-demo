@@ -78,9 +78,11 @@ run the same keyframes as `html`. What a strip can be, found by changing one thi
 - Reads a fixed edge once, before the first scroll, and holds it. A strip it can see locks the tab
   bar to the first color. WebKit files the iPad with the Mac here, not the iPhone, and an iPad
   confirmed it: `viewport-fit=cover` works, and strips it can see lock the bar.
-- Keep the strips under something at the top edge, and the Mac and iPad ignore them and follow
-  `html`'s background color instead, live. The strips go above the header only on phones: touch
-  devices whose shorter side is under 500px.
+- So they get no strips. The strips are hidden on everything but phones, touch devices whose
+  shorter side is under 500px, and the Mac and iPad follow `html`'s background color instead,
+  live. Under the header wasn't enough on the iPad: its bar overlaps the page like the iPhone's,
+  and it painted a fill behind the bar in the first color that never refreshed, a blue cast over
+  the live tint.
 
 **X's in-app browser**
 
