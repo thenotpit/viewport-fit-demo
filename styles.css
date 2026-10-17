@@ -2,7 +2,10 @@
 
 :root {
   --day-top: #2f6bff;
-  --day-bottom: #ff8ac2;
+  /* Kept under the brightness at which Safari switches its bars to dark text and icons: WebKit's
+     own rule for the refresh control is a greyscale value of 0.6, and this pink converts to about
+     0.57. The original #ff8ac2 converted to 0.70 and flipped them. */
+  --day-bottom: #d472a1;
   --night-top: #120a2a;
   --night-bottom: #2b1550;
 }

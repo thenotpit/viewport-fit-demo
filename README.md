@@ -34,7 +34,7 @@ Everything they share is in `styles.css`; each page sets only its own background
 
    ```css
    html {
-     background: #2f6bff linear-gradient(#2f6bff, #ff8ac2 100lvh, #120a2a 75%, #2b1550) no-repeat;
+     background: #2f6bff linear-gradient(#2f6bff, #d472a1 100lvh, #120a2a 75%, #2b1550) no-repeat;
    }
    ```
 
@@ -52,6 +52,13 @@ Everything they share is in `styles.css`; each page sets only its own background
      to   { background-color: #2b1550; }
    }
    ```
+
+   The gradient page runs a different set of keyframes on `html`, the same ones as its top strip:
+   the gradient's colors, placed where the top of the screen meets them during the scroll. Desktop
+   Safari tints its tab bar from `html`'s color rather than from the strips, and the shared
+   blue-to-night keyframes would skip the pink. The one cost is past the bottom of the page, where
+   Safari paints `html`'s color while rubber-banding: the top edge's final color, a shade lighter
+   than the gradient's last color, since the top of the screen never reaches the bottom of the page.
 
 4. **`env(safe-area-inset-*)`** keeps the pinned header's icons clear of the notch and rounded
    corners, now that the page reaches them.
@@ -131,6 +138,28 @@ toolbar logic. The strip hack fakes the effect from outside the page; this is th
 The page has no scripts. The menu button opens its panel with the HTML popover API
 (`popovertarget`), which also handles closing it on an outside tap or Escape, and the panel's
 animation is a CSS transition with `@starting-style`.
+
+### The gradient page's strips
+
+A strip is read as a color value, so a strip carrying the gradient itself would be sampled once and
+held. Instead each strip on the gradient page animates its `background-color` through the
+gradient's stops, placed where its own edge of the screen meets them. The page is 520 screen
+heights tall, in `lvh` like the gradient's first stop, and the scroll covers 420 of them. The top
+edge starts on the blue, meets the pink at one screen height, 23.81% of the scroll, the night's top
+at 75% of the page, 92.86%, and ends 23.08% of the way from there to the night's bottom. The bottom
+edge starts one screen down, already on the pink, meets the night's top at 69.05%, and ends on the
+night's bottom. Gradients and animations both interpolate linearly in sRGB, so the strips match the
+page within rounding, with one caveat: the last stop is written as a plain color, because a
+`color-mix()` stop makes the animation interpolate in oklab and drift off the gradient. On a phone
+the bottom edge sits a toolbar's height higher while the toolbar is showing, so the bottom strip
+runs slightly ahead until the toolbar collapses.
+
+### Pink and the bars' text
+
+Safari switches a tinted bar to dark text and icons once the tint is bright enough. The rule for
+that is in Safari rather than WebKit, but WebKit's own rule for the pull-to-refresh control is a
+greyscale value of 0.6, and the blue, at about 0.48, keeps light text while the original pink,
+at about 0.70, flipped it. The pink is now `#d472a1`, about 0.57.
 
 ### The edge strips
 
