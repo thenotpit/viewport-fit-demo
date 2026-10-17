@@ -54,6 +54,16 @@
         mask-image: linear-gradient(to top, #000, transparent);
       }
 
+      /* Test: everything else above the strips by explicit z-index, the header highest. */
+      .bar {
+        z-index: 2;
+      }
+
+      .anchor,
+      .field {
+        z-index: 1;
+      }
+
       @supports (animation-timeline: scroll()) {
         .edge {
           animation: page-color linear both;
