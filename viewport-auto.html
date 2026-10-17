@@ -4,10 +4,9 @@
     <meta charset="utf-8" />
     <!--
       The default viewport, viewport-fit=auto: the page is letterboxed inside the status bar and
-      Safari's toolbars. What Safari paints behind them is its own reading of the page, so this is
-      the page the edge strips were made for.
+      Safari's toolbars, and Safari paints them itself. This page gives it two faint strips to paint
+      them from.
     -->
-    <!-- Test: back to the default viewport with the final strips, to rule the viewport out. -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>viewport-fit=cover demo: viewport auto, strips</title>
     <link rel="stylesheet" href="styles.css" />
@@ -22,15 +21,14 @@
       }
 
       /*
-       * Two faint strips, one per screen edge. Without viewport-fit=cover the page stops short of the
-       * bars and Safari paints them itself, from a fixed element touching the edge when it is at least
-       * 90% of the viewport wide and more than 10px tall, read again whenever it repaints. It reads the
-       * color value, not the pixels, so the strips can be faint: opacity 0.1 is the floor, below it they
-       * are skipped. They run the same scroll-driven keyframes as html, so they are always the page's
-       * own color, and the blur softens their inner edge. Each strip starts past the screen's edges so
-       * the blur's fade there is off screen, and sits above the header because Safari reads whatever is
-       * topmost at the center of the edge. On the cover page the same strips make Safari fill the bars
-       * with a flat color that hides the page behind them, so only this page has them.
+       * Two faint strips, one per screen edge. Safari reads a fixed element touching an edge for its
+       * bars, and reads it again whenever it repaints, so the strips run the same scroll-driven
+       * keyframes as html and are always the page's own color. It reads the color value, not the
+       * pixels: opacity 0.1 is the floor, and a mask can fade the inner edge. Measured on an iPhone,
+       * in Safari and in X's in-app browser: the strip must be at least 20px tall and sit exactly on
+       * the screen's edge. A box that starts past the edge, or a blur, which paints past it, is not
+       * read. It sits above the header because Safari reads whatever is topmost at the center of the
+       * edge.
        */
       .edge {
         position: fixed;
@@ -39,21 +37,18 @@
         z-index: 2;
         pointer-events: none;
         background-color: var(--day-top);
-        /* Test: 10% opacity. */
         opacity: 0.1;
       }
 
       .edge-top {
         top: 0;
         height: 20px;
-        /* Test: a mask fades the inner edge instead of a blur, so the box stays flush with the screen. */
         mask-image: linear-gradient(to bottom, #000, transparent);
       }
 
       .edge-bottom {
         bottom: 0;
         height: 20px;
-        /* Test: a mask fades the inner edge instead of a blur, so the box stays flush with the screen. */
         mask-image: linear-gradient(to top, #000, transparent);
       }
 

@@ -135,22 +135,31 @@ animation is a CSS transition with `@starting-style`.
 ### The edge strips
 
 Without `viewport-fit=cover`, the page stops short of the bars and Safari paints them itself. It
-reads a fixed element touching a screen edge when that element is at least 90% of the viewport
-wide and more than 10px tall, and reads it again whenever it repaints. It reads the element's
-color value, not its pixels, so the strips on the solid pages are at 10% opacity, Safari's floor
-for a candidate, and blurred for a soft inner edge, and still report the full color. They run the
-same scroll-driven keyframes as `html`, so they are always the page's own color and the bars
-follow the scroll live. Safari reads whatever is topmost at the center of the edge, so the strips
-sit above the header. They stay off the cover page: there the same strips make Safari fill the
-bars with a flat color, which hides the page scrolling behind them and undoes the point of
-`viewport-fit=cover`.
+reads a fixed element touching a screen edge, and reads it again whenever that element repaints,
+so the strips on the auto page run the same scroll-driven keyframes as `html` and the bars follow
+the scroll live. It reads the element's color value, not its pixels: the strips are at 10%
+opacity, the floor for a candidate, and a gradient mask fades their inner edge. Safari reads
+whatever is topmost at the center of the edge, so the strips sit above the header.
+
+What the strip has to be, measured on an iPhone in Safari and in X's in-app browser, one change
+at a time:
+
+- **At least 20px tall.** 19px is not read; 20px is. The WebKit source says more than 10px, so the
+  shipping build measures differently, perhaps in device pixels on a 2x screen.
+- **Exactly on the screen's edge.** A box that starts above the top edge, or ends below the bottom
+  one, is not read, however much of it is on screen. A blur is not read either, since it paints
+  past the box, so the soft inner edge is a mask, which paints only inside it.
+- **The viewport doesn't matter.** The strips are read under `viewport-fit=cover` and under the
+  default viewport alike. Under cover, though, Safari fills the bars with the strip's color and the
+  page stops showing through behind them, which is why the cover page has no strips.
 
 In-app browsers draw an opaque bar of their own above the page. That bar reads a color once at
 load and then stops following `html`'s background. In X's in-app browser a `theme-color` meta tag
-kept equal to `html`'s color by a script had no effect, and the strips did move the bar, but only
-once the scroll came to rest: WebKit delivers the strip's new color on every frame, and the in-app
-browser applies it when scrolling settles. An in-app browser samples an edge only where its bar
-overlaps the page, which the auto page's strips never do, so that bar keeps its first color.
+kept equal to `html`'s color by a script had no effect, and the strips do move the bar, but only
+once the scroll comes to rest: WebKit delivers the strip's new color on every frame, and the
+in-app browser applies it when scrolling settles. When testing there, load the page with a fresh
+query string each time. The in-app browser keeps its own cache, and a stale copy looks exactly
+like a failed test.
 
 ## What we saw on iPhone
 
@@ -160,4 +169,4 @@ overlaps the page, which the auto page's strips never do, so that bar keeps its 
 | Gradient only, no solid color (on `html` or `body`) | White |
 | Gradient on `html` over solid blue | Blue at both ends |
 | Gradient on `html`, solid color animated from blue to night | Blue at the top, night at the bottom |
-| Cover page plus faint fixed strips at each edge | Bars filled flat in the page's color, hiding the page behind them |
+| Cover page plus fixed strips at each edge | Bars filled flat in the strips' color, hiding the page behind them |
