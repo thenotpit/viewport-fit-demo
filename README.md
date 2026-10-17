@@ -15,6 +15,8 @@ Three pages, switched from the menu:
   bars from them.
 - **Variable Strips** (`gradient.html`): the strips again, on a gradient. The top strip follows the
   gradient's color at the top of the screen, the bottom strip its color at the bottom.
+- **Experimental** (`experimental.html`): the strips on every device, pulsing on a timer with the
+  page sitting still, to see whether the bars follow a strip that changes without a scroll.
 
 ## The basics
 

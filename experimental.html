@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!--
+      An experiment. The strips are on every device, phone, tablet and desktop alike, and they pulse
+      on a timer rather than following the scroll. The page itself stays one flat blue. The question
+      is whether the bars follow a strip that changes color while nothing is scrolling.
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>viewport-fit=cover demo: experimental</title>
+    <link rel="stylesheet" href="styles.css?v=431a6bb9" />
+    <style>
+      /* One flat blue: html's scroll-driven color is off, so the strips are the only thing changing. */
+      html {
+        background-color: var(--day-top);
+        animation: none;
+      }
+
+      /*
+       * The strips on every device, above the header, pulsing between the blue and the pink on a timer.
+       * WebKit re-reads a fixed edge whenever the element repaints, so a timed animation should move
+       * the bars with no scroll at all. The Mac and the iPad stop re-reading the top edge after the first
+       * scroll, so there the pulse should run until you scroll and then lock. The pink is past the point
+       * where desktop Safari switches its bar to dark text, which is part of the experiment.
+       */
+      .edge {
+        display: block;
+        z-index: 2;
+        animation: pulse 4s ease-in-out infinite alternate;
+        animation-timeline: auto;
+      }
+
+      @keyframes pulse {
+        from {
+          background-color: var(--day-top);
+        }
+        to {
+          background-color: var(--day-bottom);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="edge edge-top" aria-hidden="true"></div>
+    <div class="edge edge-bottom" aria-hidden="true"></div>
+
+    <header class="bar">
+      <svg viewBox="0 0 32 32" role="img" aria-label="Demo">
+        <path fill="#fff" d="M16 2 30 16 16 30 2 16Z M16 9 9 16l7 7 7-7Z" fill-rule="evenodd" />
+      </svg>
+      <button type="button" class="menu" aria-label="Menu" popovertarget="credits">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M5 9h22M5 16h22M5 23h22" stroke="#fff" stroke-width="2.5" stroke-linecap="round" />
+        </svg>
+      </button>
+    </header>
+
+    <div class="credits" id="credits" popover>
+      <nav class="pages" aria-label="Demo pages">
+        <a href="./">Viewport Cover</a>
+        <a href="viewport-auto.html">Color Strip Hack</a>
+        <a href="gradient.html">Variable Strips</a>
+        <a href="experimental.html" aria-current="page">Experimental</a>
+      </nav>
+      <p class="byline">Demo by <a href="https://mrtipton.com">mrtipton.com</a></p>
+    </div>
+
+    <div class="anchor">
+      <div class="hex">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <path d="M50 3 90.7 26.5v47L50 97 9.3 73.5v-47Z" />
+        </svg>
+        <h1>Experimental.</h1>
+      </div>
+      <p>
+        The strips are on every device here and pulse between blue and pink on a four-second timer,
+        with no scrolling involved. The page itself stays blue. If the bars pulse, Safari reads a strip
+        whenever it repaints, not only on scroll.<br>
+        On the Mac and iPad, expect the pulse to run until the first scroll and then lock.
+      </p>
+    </div>
+
+    <main class="field">
+      <svg class="shape" style="--x: 10%; --y: 5%; --s: 6rem" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="46" />
+      </svg>
+      <svg class="shape" style="--x: 60%; --y: 9%; --s: 9rem" viewBox="0 0 100 100" aria-hidden="true">
+        <circle class="line" cx="50" cy="50" r="44" />
+      </svg>
+      <svg class="shape" style="--x: 30%; --y: 17%; --s: 7rem" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 6 96 90H4Z" />
+      </svg>
+      <svg class="shape" style="--x: 72%; --y: 24%; --s: 5rem; --r: 18deg" viewBox="0 0 100 100" aria-hidden="true">
+        <rect x="6" y="6" width="88" height="88" rx="18" />
+      </svg>
+      <svg class="shape" style="--x: 12%; --y: 29%; --s: 4rem" viewBox="0 0 100 100" aria-hidden="true">
+        <path class="line" d="M50 10v80M10 50h80" stroke-width="16" />
+      </svg>
+      <svg class="shape" style="--x: 50%; --y: 34%; --s: 8rem" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 4l13.5 27.4 30.2 4.4-21.9 21.3 5.2 30.1L50 73 23 87.2l5.2-30.1L6.3 35.8l30.2-4.4Z" />
+      </svg>
+      <svg class="shape" style="--x: 82%; --y: 40%; --s: 3rem" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="46" />
+      </svg>
+      <svg class="shape" style="--x: 16%; --y: 44%; --s: 7rem; --r: 30deg" viewBox="0 0 100 100" aria-hidden="true">
+        <rect class="line" x="8" y="8" width="84" height="84" />
+      </svg>
+      <svg class="shape" style="--x: 46%; --y: 52%; --s: 10rem" viewBox="0 0 100 100" aria-hidden="true">
+        <path class="line" d="M6 50l11-14 11 14 11-14 11 14 11-14 11 14 11-14 11 14" />
+      </svg>
+      <svg class="shape" style="--x: 70%; --y: 58%; --s: 6rem; --r: -12deg" viewBox="0 0 100 100" aria-hidden="true">
+        <path class="line" d="M50 8 92 86H8Z" />
+      </svg>
+      <svg class="shape" style="--x: 8%; --y: 63%; --s: 8rem" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M4 70a46 46 0 0 1 92 0Z" />
+      </svg>
+      <svg class="shape" style="--x: 40%; --y: 69%; --s: 4rem" viewBox="0 0 100 100" aria-hidden="true">
+        <circle class="line" cx="50" cy="50" r="40" stroke-width="10" />
+      </svg>
+      <svg class="shape" style="--x: 64%; --y: 75%; --s: 7rem" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 4 96 50 50 96 4 50Z" />
+      </svg>
+      <svg class="shape" style="--x: 18%; --y: 82%; --s: 10rem" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="46" />
+      </svg>
+      <svg class="shape" style="--x: 78%; --y: 88%; --s: 5rem; --r: 45deg" viewBox="0 0 100 100" aria-hidden="true">
+        <path class="line" d="M50 10v80M10 50h80" stroke-width="14" />
+      </svg>
+      <svg class="shape" style="--x: 42%; --y: 93%; --s: 4rem" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 4l13.5 27.4 30.2 4.4-21.9 21.3 5.2 30.1L50 73 23 87.2l5.2-30.1L6.3 35.8l30.2-4.4Z" />
+      </svg>
+    </main>
+
+  </body>
+</html>
