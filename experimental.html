@@ -18,7 +18,7 @@
       }
 
       /*
-       * The strips on every device, above the header, pulsing between the blue and the pink twice a second.
+       * The strips on every device, above the header, pulsing between the blue and the pink four times a second.
        * WebKit re-reads a fixed edge whenever the element repaints, so a timed animation should move
        * the bars with no scroll at all. The Mac and the iPad stop re-reading the top edge after the first
        * scroll, so there the pulse should run until you scroll and then lock. The pink is past the point
@@ -27,7 +27,7 @@
       .edge {
         display: block;
         z-index: 2;
-        animation: pulse 0.5s ease-in-out infinite alternate;
+        animation: pulse 0.25s ease-in-out infinite alternate;
         animation-timeline: auto;
       }
 
@@ -74,7 +74,7 @@
         <h1>Experimental.</h1>
       </div>
       <p>
-        The strips are on every device here and pulse between blue and pink on a half-second timer,
+        The strips are on every device here and pulse between blue and pink on a quarter-second timer,
         with no scrolling involved. The page itself stays blue. If the bars pulse, Safari reads a strip
         whenever it repaints, not only on scroll.<br>
         On the Mac and iPad, expect the pulse to run until the first scroll and then lock.
