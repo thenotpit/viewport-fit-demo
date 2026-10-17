@@ -267,10 +267,14 @@ body {
   font-weight: 600;
 }
 
-/* The scroll: white shapes scattered down a tall field. */
+/*
+ * The scroll: white shapes scattered down a tall field. Its height is in lvh, the same unit as the
+ * gradient's first stop, so the strips' keyframes, which place that stop as a share of the scroll,
+ * hold on a phone where the small and large viewports differ by the toolbar.
+ */
 .field {
   position: relative;
-  height: 520svh;
+  height: 520lvh;
   overflow-x: clip;
 }
 

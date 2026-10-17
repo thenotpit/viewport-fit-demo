@@ -9,7 +9,7 @@
     -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>viewport-fit=cover demo: gradient</title>
-    <link rel="stylesheet" href="styles.css?v=169c5c38" />
+    <link rel="stylesheet" href="styles.css?v=58547e38" />
     <style>
       /*
        * The sky is the page's own background, not a fixed layer. Safari tints its toolbars from fixed
@@ -34,8 +34,8 @@
        * The strips trace the gradient. Safari reads a strip's background-color value, not its
        * pixels, and a strip carrying the gradient itself would be sampled once and held, so each
        * strip animates its color through the gradient's stops, placed where its own edge of the
-       * screen meets them during the scroll. The page is 520 screen heights tall and the scroll
-       * covers 420 of them. The top edge starts at the day's blue, meets the pink at one screen
+       * screen meets them during the scroll. The page is 520 screen heights tall, in lvh like the
+       * gradient's first stop, and the scroll covers 420 of them once the toolbar has collapsed. The top edge starts at the day's blue, meets the pink at one screen
        * height, 23.81% of the scroll, the night's top at 75% of the page, 92.86%, and ends 23.08% of
        * the way from there to the night's bottom. The bottom edge starts one screen down, already at
        * the pink, meets the night's top at 69.05%, and ends on the night's bottom. The gradient and
