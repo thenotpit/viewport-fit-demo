@@ -158,7 +158,10 @@ scroll, and then held, so when the strips are detected there they lock the tab t
 blue. With the strips above the header the Mac detects them; under the header it does not, and
 follows `html`'s color instead, as it does on the page without strips. The strips therefore carry
 no z-index: the phone and the in-app browser read them under the header, and the Mac ignores
-them.
+them. How the strips end up underneath makes no difference. Leaving them without a z-index and
+first in the markup, or giving every other element an explicit z-index above them, behaves the
+same in all three browsers; what is read depends on which element is on top at the edge, not on
+how it got there.
 
 The soft inner edge is a mask rather than a blur because a blur fades at the screen edge as well,
 and hiding that fade needs the box to overhang the edge, which X does not read. A mask paints only
