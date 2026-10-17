@@ -171,19 +171,27 @@ body {
 
 /*
  * One large shape pinned to the centre of the screen while the white shapes scroll over it. It
- * is fixed but clear of the screen's edges, so it shouldn't change Safari's bars. A page can hang
- * a short note beneath it.
+ * is fixed but clear of the screen's edges, so it shouldn't change Safari's bars. A page can put a
+ * heading inside it and a short note beneath it; the shape and the note centre as one.
  */
 .anchor {
   position: fixed;
   top: 50%;
   left: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   width: min(80vw, 26rem);
   translate: -50% -50%;
   pointer-events: none;
 }
 
-.anchor svg {
+.hex {
+  display: grid;
+}
+
+.hex svg {
+  grid-area: 1 / 1;
   display: block;
   width: 100%;
   height: auto;
@@ -191,13 +199,23 @@ body {
   opacity: 0.5;
 }
 
-/* The note: 20px below the shape, centred, never wider than 380px. */
+/* The heading sits in the middle of the shape. The shape's opacity makes it paint late, so the heading is positioned to paint after it. */
+.hex h1 {
+  grid-area: 1 / 1;
+  position: relative;
+  place-self: center;
+  margin: 0;
+  text-align: center;
+  font-size: clamp(1.25rem, 5vw, 1.75rem);
+  font-weight: 600;
+}
+
+/* The note: centred under the shape, never wider than 380px. */
 .anchor p {
-  position: absolute;
-  top: calc(100% + 20px);
-  inset-inline: 0;
+  align-self: center;
+  width: 100%;
   max-width: 380px;
-  margin: 0 auto;
+  margin: 0;
   font-size: 0.95rem;
   line-height: 1.45;
   color: rgb(255 255 255 / 0.9);
