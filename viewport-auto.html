@@ -28,14 +28,15 @@
        * in Safari and in X's in-app browser: Safari reads a strip of 12px, X needs 20px, and X does not
        * read a box that starts past the screen's edge. The soft inner edge is a mask rather than a
        * blur because a blur fades at the screen edge too, and hiding that fade needs the overhang X
-       * won't read. Both read the strips with the header above them, so they take no z-index.
+       * won't read. Both read the strips with the header above them. Desktop Safari does not, and
+       * that is wanted: on the Mac a fixed edge's color is read once, before the first scroll, and
+       * held, so strips above the header lock the tab tint to the first blue. Under the header the
+       * Mac follows html's color instead. Hence no z-index.
        */
       .edge {
         position: fixed;
         left: 0;
         right: 0;
-        /* Test: strips above the header again, for desktop Safari. */
-        z-index: 2;
         pointer-events: none;
         background-color: var(--day-top);
         opacity: 0.1;

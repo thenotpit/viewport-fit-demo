@@ -153,6 +153,13 @@ browser read the strips by the same mechanism but not by the same rules:
 | Under the header | Read | Read |
 | Viewport | Read under cover and auto | Read under cover and auto |
 
+Desktop Safari runs the other way. On the Mac a fixed edge's color is read once, before the first
+scroll, and then held, so when the strips are detected there they lock the tab tint to the first
+blue. With the strips above the header the Mac detects them; under the header it does not, and
+follows `html`'s color instead, as it does on the page without strips. The strips therefore carry
+no z-index: the phone and the in-app browser read them under the header, and the Mac ignores
+them.
+
 The soft inner edge is a mask rather than a blur because a blur fades at the screen edge as well,
 and hiding that fade needs the box to overhang the edge, which X does not read. A mask paints only
 inside the box.
