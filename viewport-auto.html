@@ -41,20 +41,20 @@
         background-color: var(--day-top);
         /* Test: 10% opacity. */
         opacity: 0.1;
-        /* Test: blur back, strips flush with the edges. */
-        filter: blur(6px);
       }
 
       .edge-top {
-        /* Test: box centred on the screen edge, so the blur peaks there and 20px shows. */
-        top: -20px;
-        height: 40px;
+        top: 0;
+        height: 20px;
+        /* Test: a mask fades the inner edge instead of a blur, so the box stays flush with the screen. */
+        mask-image: linear-gradient(to bottom, #000, transparent);
       }
 
       .edge-bottom {
-        /* Test: box centred on the screen edge, so the blur peaks there and 20px shows. */
-        bottom: -20px;
-        height: 40px;
+        bottom: 0;
+        height: 20px;
+        /* Test: a mask fades the inner edge instead of a blur, so the box stays flush with the screen. */
+        mask-image: linear-gradient(to top, #000, transparent);
       }
 
       @supports (animation-timeline: scroll()) {
