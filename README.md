@@ -14,8 +14,9 @@ There are three pages, switched from the menu:
 - **Color Strip Hack** (`viewport-auto.html`): the same page with the default viewport. It is
   letterboxed inside the status bar and the toolbars, and Safari paints them from two faint fixed
   strips at the screen's edges, which carry the same color.
-- **Variable Strips** (`gradient.html`): `viewport-fit=cover` with a day gradient on the page, over the
-  solid color that follows the scroll.
+- **Variable Strips** (`gradient.html`): the default viewport with a day gradient on the page,
+  over a solid color that follows the scroll. Its two strips each follow the color the gradient
+  has at their own edge of the screen, so the bars continue the gradient top and bottom.
 
 Everything they share is in `styles.css`; each page sets only its own background on `html`.
 
