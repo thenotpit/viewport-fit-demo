@@ -43,7 +43,14 @@
        * the pink, meets the night's top at 69.05%, and ends on the night's bottom. The gradient and
        * the animation both interpolate linearly in sRGB, so the strips match the page.
        */
+      /*
+       * html's solid color follows the top edge too. Desktop Safari tints its tab bar from html's
+       * background color, not from the strips, and the shared keyframes have no pink in them. The
+       * cost is past the bottom of the page, where Safari paints this color while rubber-banding: a
+       * shade lighter than the gradient's last color, since the top edge never reaches the bottom.
+       */
       @supports (animation-timeline: scroll()) {
+        html,
         .edge-top {
           animation: edge-top-color linear both;
           animation-timeline: scroll(root);
