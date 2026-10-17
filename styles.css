@@ -35,6 +35,46 @@
   }
 }
 
+/*
+ * Two faint strips, one per screen edge, for the pages without viewport-fit=cover. Safari reads a
+ * fixed element touching an edge for its bars, and reads it again whenever it repaints, so the
+ * strips animate their background-color on the scroll: by default the page's own color, from the
+ * shared keyframes; a page can swap in keyframes of its own. Safari reads the color value, not the
+ * pixels: opacity 0.1 is the floor, and a mask can fade the inner edge. Measured on an iPhone, in
+ * Safari and in X's in-app browser: Safari reads a strip of 12px, X needs 20px, and X does not
+ * read a box that starts past the screen's edge, which is why the soft edge is a mask and not a
+ * blur. Both read the strips under the header. Desktop Safari does not, and that is wanted: the Mac
+ * reads a fixed edge's color once, before the first scroll, and holds it, so strips above the
+ * header would lock its tab tint to the first color. Hence no z-index.
+ */
+.edge {
+  position: fixed;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  background-color: var(--day-top);
+  opacity: 0.1;
+}
+
+.edge-top {
+  top: 0;
+  height: 20px;
+  mask-image: linear-gradient(to bottom, #000, transparent);
+}
+
+.edge-bottom {
+  bottom: 0;
+  height: 20px;
+  mask-image: linear-gradient(to top, #000, transparent);
+}
+
+@supports (animation-timeline: scroll()) {
+  .edge {
+    animation: page-color linear both;
+    animation-timeline: scroll(root);
+  }
+}
+
 body {
   margin: 0;
   font-family: system-ui, -apple-system, sans-serif;

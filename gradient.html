@@ -3,12 +3,13 @@
   <head>
     <meta charset="utf-8" />
     <!--
-      viewport-fit=cover lets the page draw edge to edge: into the notch and home-indicator areas,
-      and behind Safari's toolbars, instead of being letterboxed inside them.
+      The default viewport, viewport-fit=auto: the page is letterboxed inside the status bar and
+      Safari's toolbars, and Safari paints them from the two strips at the screen's edges. Each strip
+      follows the color the gradient has at its own edge of the screen.
     -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>viewport-fit=cover demo: gradient</title>
-    <link rel="stylesheet" href="styles.css?v=59af8670" />
+    <link rel="stylesheet" href="styles.css?v=169c5c38" />
     <style>
       /*
        * The sky is the page's own background, not a fixed layer. Safari tints its toolbars from fixed
@@ -28,9 +29,62 @@
           )
           no-repeat;
       }
+
+      /*
+       * The strips trace the gradient. Safari reads a strip's background-color value, not its
+       * pixels, and a strip carrying the gradient itself would be sampled once and held, so each
+       * strip animates its color through the gradient's stops, placed where its own edge of the
+       * screen meets them during the scroll. The page is 520 screen heights tall and the scroll
+       * covers 420 of them. The top edge starts at the day's blue, meets the pink at one screen
+       * height, 23.81% of the scroll, the night's top at 75% of the page, 92.86%, and ends 23.08% of
+       * the way from there to the night's bottom. The bottom edge starts one screen down, already at
+       * the pink, meets the night's top at 69.05%, and ends on the night's bottom. The gradient and
+       * the animation both interpolate linearly in sRGB, so the strips match the page.
+       */
+      @supports (animation-timeline: scroll()) {
+        .edge-top {
+          animation-name: edge-top-color;
+        }
+
+        .edge-bottom {
+          animation-name: edge-bottom-color;
+        }
+      }
+
+      @keyframes edge-top-color {
+        from {
+          background-color: var(--day-top);
+        }
+        23.81% {
+          background-color: var(--day-bottom);
+        }
+        92.86% {
+          background-color: var(--night-top);
+        }
+        to {
+          /* 23.08% of the way from --night-top to --night-bottom. A plain color, because a
+             color-mix() stop would make the animation interpolate in oklab, off the gradient. */
+          background-color: #180d33;
+        }
+      }
+
+      @keyframes edge-bottom-color {
+        from {
+          background-color: var(--day-bottom);
+        }
+        69.05% {
+          background-color: var(--night-top);
+        }
+        to {
+          background-color: var(--night-bottom);
+        }
+      }
     </style>
   </head>
   <body>
+    <div class="edge edge-top" aria-hidden="true"></div>
+    <div class="edge edge-bottom" aria-hidden="true"></div>
+
     <header class="bar">
       <svg viewBox="0 0 32 32" role="img" aria-label="Demo">
         <path fill="#fff" d="M16 2 30 16 16 30 2 16Z M16 9 9 16l7 7 7-7Z" fill-rule="evenodd" />
@@ -51,17 +105,16 @@
       <p class="byline">Demo by <a href="https://mrtipton.com">mrtipton.com</a></p>
     </div>
 
-    <div class="anchor" aria-hidden="true">
+    <div class="anchor">
       <div class="hex">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <path d="M50 3 90.7 26.5v47L50 97 9.3 73.5v-47Z" />
         </svg>
+        <h1>Gradient.</h1>
       </div>
     </div>
 
     <main class="field">
-      <h1 class="visually-hidden">viewport-fit=cover demo: gradient</h1>
-
       <svg class="shape" style="--x: 10%; --y: 5%; --s: 6rem" viewBox="0 0 100 100" aria-hidden="true">
         <circle cx="50" cy="50" r="46" />
       </svg>
