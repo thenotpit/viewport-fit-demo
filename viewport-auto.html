@@ -46,13 +46,15 @@
       }
 
       .edge-top {
-        top: 0;
-        height: 20px;
+        /* Test: box centred on the screen edge, so the blur peaks there and 20px shows. */
+        top: -20px;
+        height: 40px;
       }
 
       .edge-bottom {
-        bottom: 0;
-        height: 20px;
+        /* Test: box centred on the screen edge, so the blur peaks there and 20px shows. */
+        bottom: -20px;
+        height: 40px;
       }
 
       @supports (animation-timeline: scroll()) {
