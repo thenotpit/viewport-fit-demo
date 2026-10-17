@@ -33,8 +33,9 @@
        * with a flat color that hides the page behind them, so only this page has them.
        */
       .edge {
-        --bleed: 12px;
-        --blur: 6px;
+        /* Test: no bleed past the screen edges. */
+        --bleed: 0px;
+        --blur: 0px;
         position: fixed;
         left: calc(-1 * var(--blur));
         right: calc(-1 * var(--blur));
