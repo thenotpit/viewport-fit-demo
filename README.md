@@ -34,7 +34,7 @@ Everything they share is in `styles.css`; each page sets only its own background
 
    ```css
    html {
-     background: #2f6bff linear-gradient(#2f6bff, #d472a1 100lvh, #120a2a 75%, #2b1550) no-repeat;
+     background: #2f6bff linear-gradient(#2f6bff, #ff8ac2 100lvh, #120a2a 75%, #2b1550) no-repeat;
    }
    ```
 
@@ -158,8 +158,11 @@ runs slightly ahead until the toolbar collapses.
 
 Safari switches a tinted bar to dark text and icons once the tint is bright enough. The rule for
 that is in Safari rather than WebKit, but WebKit's own rule for the pull-to-refresh control is a
-greyscale value of 0.6, and the blue, at about 0.48, keeps light text while the original pink,
-at about 0.70, flipped it. The pink is now `#d472a1`, about 0.57.
+greyscale value of 0.6, and the blue, at about 0.47, keeps light text while the pink, at about
+0.70, flips it, and so did a pink at 0.57. On the gradient page the pink stop in `html`'s keyframes
+is therefore a custom property: the top strip keeps the gradient's pink, and `html`, which is
+what desktop Safari tints from, takes `#b45f88`, about 0.48. The phone's bars come from the
+strips and keep the brighter pink.
 
 ### The edge strips
 

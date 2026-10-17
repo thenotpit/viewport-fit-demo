@@ -49,6 +49,21 @@
        * cost is past the bottom of the page, where Safari paints this color while rubber-banding: a
        * shade lighter than the gradient's last color, since the top edge never reaches the bottom.
        */
+      /*
+       * The keyframes' pink stop is a custom property, so html and the top strip share the keyframes
+       * but not the pink. The strip keeps the gradient's pink; html takes a darker one, #b45f88, a
+       * greyscale value of about 0.48, just under the blue's, because at the gradient's pink desktop
+       * Safari switches its tab bar to dark text and icons. The phone's bars come from the strips and
+       * keep the brighter pink.
+       */
+      html {
+        --pink: #b45f88;
+      }
+
+      .edge-top {
+        --pink: var(--day-bottom);
+      }
+
       @supports (animation-timeline: scroll()) {
         html,
         .edge-top {
@@ -67,7 +82,7 @@
           background-color: var(--day-top);
         }
         23.81% {
-          background-color: var(--day-bottom);
+          background-color: var(--pink);
         }
         92.86% {
           background-color: var(--night-top);
