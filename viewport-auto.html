@@ -33,10 +33,7 @@
        * with a flat color that hides the page behind them, so only this page has them.
        */
       .edge {
-        --bleed: 12px;
-        --blur: 6px;
         position: fixed;
-        /* Test: no side overhang; top and bottom overhang kept. */
         left: 0;
         right: 0;
         z-index: 2;
@@ -44,18 +41,18 @@
         background-color: var(--day-top);
         /* Test: full opacity. */
         opacity: 1;
-        /* Test: no blur. */
-        filter: none;
+        /* Test: blur back, strips flush with the edges. */
+        filter: blur(6px);
       }
 
       .edge-top {
-        top: calc(-1 * var(--bleed));
-        height: calc(20px + var(--bleed));
+        top: 0;
+        height: 20px;
       }
 
       .edge-bottom {
-        bottom: calc(-1 * var(--bleed));
-        height: calc(20px + var(--bleed));
+        bottom: 0;
+        height: 20px;
       }
 
       @supports (animation-timeline: scroll()) {
