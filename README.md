@@ -138,8 +138,7 @@ Without `viewport-fit=cover`, the page stops short of the bars and Safari paints
 reads a fixed element touching a screen edge, and reads it again whenever that element repaints,
 so the strips on the auto page run the same scroll-driven keyframes as `html` and the bars follow
 the scroll live. It reads the element's color value, not its pixels: the strips are at 10%
-opacity, the floor for a candidate, and a gradient mask fades their inner edge. Safari reads
-whatever is topmost at the center of the edge, so the strips sit above the header.
+opacity, the floor for a candidate, and a gradient mask fades their inner edge.
 
 What a strip can be, measured on an iPhone one change at a time. Safari's bars and X's in-app
 browser read the strips by the same mechanism but not by the same rules:
@@ -151,7 +150,7 @@ browser read the strips by the same mechanism but not by the same rules:
 | Blur | Read | Read |
 | Gradient mask | Read | Read |
 | Box past the screen's edge | Read | Not read, however much is on screen |
-| Topmost at the center of the edge | Required | Required |
+| Under the header | Read | Read |
 | Viewport | Read under cover and auto | Read under cover and auto |
 
 The soft inner edge is a mask rather than a blur because a blur fades at the screen edge as well,
