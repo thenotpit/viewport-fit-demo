@@ -93,6 +93,13 @@
         </svg>
         <h1>Color Strip Hack.</h1>
       </div>
+      <p>
+        WebKit reads 4px in from the horizontal center edge for its chrome color.<br>
+        Using strips will revert ‘viewport-fill’ to its apparent default and display the mobile chrome blocks regardless of any setting.<br>
+        The strips must be at least 10px high and must not bleed. However, they must be at least 20px high for in-app browsers, such as X’s, to respond.<br>
+        The strips can be blurred or masked. They can be as low as 10% opacity, and they can be a bottom layer (z-index or DOM). Note: If placed as a top layer, desktop chrome <u>will not</u> respond to color changes.<br>
+        Do NOT use JS, CSS only.
+      </p>
     </div>
 
     <main class="field">
