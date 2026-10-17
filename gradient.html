@@ -31,7 +31,9 @@
       }
 
       /*
-       * The strips trace the gradient. Safari reads a strip's background-color value, not its
+       * The strips trace the gradient, each with its own complete animation: overriding only the
+       * shared animation's name left Safari running the shared keyframes on the top strip.
+       * Safari reads a strip's background-color value, not its
        * pixels, and a strip carrying the gradient itself would be sampled once and held, so each
        * strip animates its color through the gradient's stops, placed where its own edge of the
        * screen meets them during the scroll. The page is 520 screen heights tall, in lvh like the
@@ -49,11 +51,13 @@
 
       @supports (animation-timeline: scroll()) {
         .edge-top {
-          animation-name: edge-top-color;
+          animation: edge-top-color linear both;
+          animation-timeline: scroll(root);
         }
 
         .edge-bottom {
-          animation-name: edge-bottom-color;
+          animation: edge-bottom-color linear both;
+          animation-timeline: scroll(root);
         }
       }
 
