@@ -36,8 +36,9 @@
         --bleed: 12px;
         --blur: 6px;
         position: fixed;
-        left: calc(-1 * var(--blur));
-        right: calc(-1 * var(--blur));
+        /* Test: no side overhang; top and bottom overhang kept. */
+        left: 0;
+        right: 0;
         z-index: 2;
         pointer-events: none;
         background-color: var(--day-top);
