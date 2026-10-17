@@ -4,6 +4,8 @@ How to make Safari's status bar and toolbars take on your page's colors as you s
 CSS only. No JavaScript anywhere. Open it on an iPhone, a Mac, and inside X's in-app browser; the
 three behave differently and this README says how.
 
+**Live demo:** <https://thenotpit.github.io/viewport-fit-demo/>
+
 Three pages, switched from the menu:
 
 - **Viewport Cover** (`index.html`): `viewport-fit=cover`. The page runs edge to edge behind the
