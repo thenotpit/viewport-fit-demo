@@ -46,12 +46,13 @@
 
       .edge-top {
         top: calc(-1 * var(--bleed));
-        height: calc(max(12px, env(safe-area-inset-top)) + var(--bleed));
+        /* Test: 60px to rule strip height out as what the in-app browser needs. */
+        height: calc(60px + var(--bleed));
       }
 
       .edge-bottom {
         bottom: calc(-1 * var(--bleed));
-        height: calc(max(12px, env(safe-area-inset-bottom)) + var(--bleed));
+        height: calc(60px + var(--bleed));
       }
 
       @supports (animation-timeline: scroll()) {
