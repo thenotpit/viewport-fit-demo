@@ -173,43 +173,37 @@ body {
 
 /*
  * One large shape pinned to the centre of the screen while the white shapes scroll over it. It
- * is fixed but clear of the screen's edges, so it shouldn't change Safari's bars. A page can lay a
- * short note over it.
+ * is fixed but clear of the screen's edges, so it shouldn't change Safari's bars. A page can hang
+ * a short note beneath it.
  */
 .anchor {
   position: fixed;
   top: 50%;
   left: 50%;
-  display: grid;
   width: min(80vw, 26rem);
   translate: -50% -50%;
   pointer-events: none;
 }
 
 .anchor svg {
-  grid-area: 1 / 1;
+  display: block;
   width: 100%;
   height: auto;
   fill: #000;
   opacity: 0.5;
 }
 
-/*
- * The note sits inside the hexagon's flat-sided middle, the band from a quarter to three quarters
- * of its height. The shape's opacity makes it paint late, so the note is positioned to paint
- * after it.
- */
+/* The note: 20px below the shape, centred, never wider than 380px. */
 .anchor p {
-  grid-area: 1 / 1;
-  position: relative;
-  align-self: center;
-  max-height: 46%;
-  margin: 0;
-  padding: 0 11%;
-  text-align: center;
-  font-size: clamp(0.72rem, 3.3vw, 0.9rem);
-  line-height: 1.35;
-  text-wrap: balance;
+  position: absolute;
+  top: calc(100% + 20px);
+  inset-inline: 0;
+  max-width: 380px;
+  margin: 0 auto;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: rgb(255 255 255 / 0.8);
+  text-wrap: pretty;
 }
 
 .anchor code {
