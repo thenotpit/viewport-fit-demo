@@ -35,7 +35,8 @@
         position: fixed;
         left: 0;
         right: 0;
-        z-index: 2;
+        /* Test: below the header, which is z-index 1, so the header is topmost at the edge. */
+        z-index: 0;
         pointer-events: none;
         background-color: var(--day-top);
         opacity: 0.1;
