@@ -25,10 +25,11 @@
        * bars, and reads it again whenever it repaints, so the strips run the same scroll-driven
        * keyframes as html and are always the page's own color. It reads the color value, not the
        * pixels: opacity 0.1 is the floor, and a mask can fade the inner edge. Measured on an iPhone,
-       * in Safari and in X's in-app browser: the strip must be at least 20px tall and sit exactly on
-       * the screen's edge. A box that starts past the edge, or a blur, which paints past it, is not
-       * read. It sits above the header because Safari reads whatever is topmost at the center of the
-       * edge.
+       * in Safari and in X's in-app browser: Safari reads a strip of 12px, X needs 20px, and X does not
+       * read a box that starts past the screen's edge. The soft inner edge is a mask rather than a
+       * blur because a blur fades at the screen edge too, and hiding that fade needs the overhang X
+       * won't read. The strips sit above the header because Safari reads whatever is topmost at the
+       * center of the edge.
        */
       .edge {
         position: fixed;

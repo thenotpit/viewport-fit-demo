@@ -141,17 +141,29 @@ the scroll live. It reads the element's color value, not its pixels: the strips 
 opacity, the floor for a candidate, and a gradient mask fades their inner edge. Safari reads
 whatever is topmost at the center of the edge, so the strips sit above the header.
 
-What the strip has to be, measured on an iPhone in Safari and in X's in-app browser, one change
-at a time:
+What a strip can be, measured on an iPhone one change at a time. Safari's bars and X's in-app
+browser read the strips by the same mechanism but not by the same rules:
 
-- **At least 20px tall.** 19px is not read; 20px is. The WebKit source says more than 10px, so the
-  shipping build measures differently, perhaps in device pixels on a 2x screen.
-- **Exactly on the screen's edge.** A box that starts above the top edge, or ends below the bottom
-  one, is not read, however much of it is on screen. A blur is not read either, since it paints
-  past the box, so the soft inner edge is a mask, which paints only inside it.
-- **The viewport doesn't matter.** The strips are read under `viewport-fit=cover` and under the
-  default viewport alike. Under cover, though, Safari fills the bars with the strip's color and the
-  page stops showing through behind them, which is why the cover page has no strips.
+| | Safari | X's in-app browser |
+|---|---|---|
+| Height | 12px read; the WebKit source says more than 10px | 20px read, 19px not |
+| 10% opacity | Read | Read |
+| Blur | Read | Read |
+| Gradient mask | Read | Read |
+| Box past the screen's edge | Read | Not read, however much is on screen |
+| Topmost at the center of the edge | Required | Required |
+| Viewport | Read under cover and auto | Read under cover and auto |
+
+The soft inner edge is a mask rather than a blur because a blur fades at the screen edge as well,
+and hiding that fade needs the box to overhang the edge, which X does not read. A mask paints only
+inside the box.
+
+The strips do not change the viewport. Under `viewport-fit=cover` the page still runs behind the
+bars and the safe-area insets are still real, but Safari fills the bars with the strips' color and
+the page stops showing through. On a solid page that looks the same as the default viewport; on
+the gradient page it would be a flat band over the gradient. That is why the cover page has no
+strips: the choice is between bars the page shows through, with the in-app browser's bar holding
+its first color, and bars painted from the strips that the in-app browser follows.
 
 In-app browsers draw an opaque bar of their own above the page. That bar reads a color once at
 load and then stops following `html`'s background. In X's in-app browser a `theme-color` meta tag
