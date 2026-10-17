@@ -1,234 +1,117 @@
-# viewport-fit=cover demo
+# Controlling Browser Chrome
 
-One static page showing how to draw a page edge to edge on iPhone, behind Safari's toolbars, in
-HTML and CSS alone, with no scripts sampling or animating the toolbar's color.
+How to make Safari's status bar and toolbars take on your page's colors as you scroll, in HTML and
+CSS only. No JavaScript anywhere. Open it on an iPhone, a Mac, and inside X's in-app browser; the
+three behave differently and this README says how.
 
-Open it on an iPhone and scroll: the sky runs behind the status bar and the toolbar, from day at the
-top of the page to night at the bottom.
+Three pages, switched from the menu:
 
-There are three pages, switched from the menu:
+- **Viewport Cover** (`index.html`): `viewport-fit=cover`. The page runs edge to edge behind the
+  bars, and its background color animates with the scroll, so the bars are always the page's color.
+- **Color Strip Hack** (`viewport-auto.html`): the default viewport, so the page stops short of the
+  bars. Two faint fixed strips at the screen's edges carry the page's color, and Safari paints the
+  bars from them.
+- **Variable Strips** (`gradient.html`): the strips again, on a gradient. The top strip follows the
+  gradient's color at the top of the screen, the bottom strip its color at the bottom.
 
-- **Viewport Cover** (`index.html`): `viewport-fit=cover`. The page draws edge to edge behind
-  Safari's bars, one solid color fading from blue to night as you scroll, so the page and the bars
-  are always exactly the same color.
-- **Color Strip Hack** (`viewport-auto.html`): the same page with the default viewport. It is
-  letterboxed inside the status bar and the toolbars, and Safari paints them from two faint fixed
-  strips at the screen's edges, which carry the same color.
-- **Variable Strips** (`gradient.html`): the default viewport with a day gradient on the page,
-  over a solid color that follows the scroll. Its two strips each follow the color the gradient
-  has at their own edge of the screen, so the bars continue the gradient top and bottom.
+## The basics
 
-Everything they share is in `styles.css`; each page sets only its own background on `html`.
+**`viewport-fit=cover`** lets the page lay out under the notch, the home indicator and the bars,
+and makes `env(safe-area-inset-*)` real, so pinned things can stay clear of them.
 
-## How it works
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+```
 
-1. **`viewport-fit=cover`** in the viewport meta tag lets the page lay out into the notch and
-   home-indicator areas, instead of being letterboxed inside them, and makes the
-   `env(safe-area-inset-*)` values real.
+**Put the color on `html` and animate it with the scroll.** Where Safari needs a single color,
+behind the status bar and past either end of the page, it reads `html`'s `background-color`. A
+scroll-driven animation keeps that color matching whichever end you are at, and the browser runs it
+itself, so nothing waits on a script.
 
-   ```html
-   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-   ```
+```css
+html {
+  animation: page-color linear both;
+  animation-timeline: scroll(root);
+}
 
-2. **The sky is a gradient on `html`, over a solid color.** **`lvh`** (the screen with the toolbars
-   hidden) sets where day ends, so the first screen is the full day gradient.
+@keyframes page-color {
+  from { background-color: #2f6bff; }
+  to   { background-color: #2b1550; }
+}
+```
 
-   ```css
-   html {
-     background: #2f6bff linear-gradient(#2f6bff, #ff8ac2 100lvh, #120a2a 75%, #2b1550) no-repeat;
-   }
-   ```
+**Don't pin a background.** A `position: fixed` layer touching the screen's edges makes Safari fill
+the bars with a flat color and the page stops showing through. That includes layers you didn't add:
+a popover's `::backdrop` did it here until it was switched off with `display: none`.
 
-3. **The solid color follows the scroll**, from the blue at the top of the page to the night at the
-   bottom, with a CSS scroll-driven animation.
+## Color strips
 
-   ```css
-   html {
-     animation: page-color linear both;
-     animation-timeline: scroll(root);
-   }
+Without `viewport-fit=cover`, Safari paints its bars from a fixed element touching the screen's
+edge. It reads the element's `background-color` value, not its pixels, and reads it again every time
+the element repaints, so a strip animating its color on the scroll gives you live bars. WebKit looks
+at one point: the horizontal center of the edge, 4px in. Whatever is topmost there is what it reads.
 
-   @keyframes page-color {
-     from { background-color: #2f6bff; }
-     to   { background-color: #2b1550; }
-   }
-   ```
+The strips here are 20px tall, at 10% opacity, with a gradient mask fading the inner edge, and they
+run the same keyframes as `html`. What a strip can be, found by changing one thing at a time:
 
-   The gradient page runs a different set of keyframes on `html`, the same ones as its top strip:
-   the gradient's colors, placed where the top of the screen meets them during the scroll. Desktop
-   Safari tints its tab bar from `html`'s color rather than from the strips, and the shared
-   blue-to-night keyframes would skip the pink. The one cost is past the bottom of the page, where
-   Safari paints `html`'s color while rubber-banding: the top edge's final color, a shade lighter
-   than the gradient's last color, since the top of the screen never reaches the bottom of the page.
+**Safari on iPhone**
 
-4. **`env(safe-area-inset-*)`** keeps the pinned header's icons clear of the notch and rounded
-   corners, now that the page reaches them.
+- At least 11px tall. WebKit's rule is "more than 10"; 12px is the smallest we tried.
+- Can be 10% opacity. Below 0.1 it is skipped.
+- Can be blurred or masked.
+- Can bleed past the screen's edge.
+- Can sit under other elements, with a catch: if something else is on top at the center of the
+  edge, Safari uses `html`'s background color for that bar instead of the strip. On a solid page
+  the two match and you won't notice. On the gradient page they don't, so the strips sit above the
+  header on touch devices.
 
-## Notes
+**Safari on the Mac**
 
-### Don't pin the background
+- Reads a fixed edge once, before the first scroll, and holds it. A strip it can see locks the tab
+  bar to the first color.
+- Keep the strips under something at the top edge, and the Mac ignores them and follows `html`'s
+  background color instead, live. The strips go above the header only inside `@media (hover: none)`.
 
-A `position: fixed` background layer, one that stays put while the page scrolls, turns Safari's bars
-solid. Safari tints its toolbars from fixed elements touching the screen's edges, and a full-screen
-fixed layer touches both. The page then stops showing behind the bars. That same heuristic is what
-"color strips at the top and bottom" tricks rely on.
+**X's in-app browser**
 
-So the background is part of the page and scrolls with it. Small fixed elements without a background
-of their own, like the header here, didn't cause it.
+- At least 20px tall. 19px is not read.
+- Can be 10% opacity, blurred, or masked.
+- Cannot bleed past the screen's edge, however much of it is on screen. That is also why the soft
+  edge is a mask and not a blur: a blur fades at the screen's edge too, and fixing that needs
+  overhang.
+- Updates only once the scroll comes to rest. WebKit sends the new color every frame; the in-app
+  browser applies it when scrolling settles.
+- A `theme-color` meta tag, even one kept in sync by script, does nothing there.
 
-Watch for full-screen layers you didn't add yourself. A popover comes with a `::backdrop`, a
-transparent layer pinned over the whole screen, and opening the menu panel turned the bottom bar
-solid until the backdrop was switched off with `display: none`. A scrim drawn as a huge shadow on the
-panel instead avoided the solid bars but couldn't dim the strip behind the status bar, which is
-Safari's own color, so the panel opens without one.
+**Notes**
 
-### Safari reads a color, not the gradient
+- Strips on a `viewport-fit=cover` page make Safari fill the bars flat in the strips' color, hiding
+  the page behind them. It looks like the default viewport. So cover and strips don't mix: cover
+  looks best in Safari and leaves X with a solid bar; strips work everywhere but the page no longer
+  shows through the bars.
+- How a strip ends up on top or underneath makes no difference. Explicit `z-index` and plain DOM
+  order behave the same in all three browsers.
+- When testing in X, load the page with a fresh query string each time. It keeps its own cache, and
+  a stale copy looks exactly like a failed test.
 
-Where Safari needs one color (the strip behind the status bar, and the area past either end of the
-page when you pull beyond it), it uses the page's solid `background-color`. It ignores the gradient,
-and with no solid color set it falls back to white.
+## Variable strips
 
-### Move that color with the scroll
+A strip painted with the gradient would be sampled once and held, since Safari reads a color value.
+So each strip animates its `background-color` through the gradient's stops, placed where its own
+edge of the screen meets them during the scroll. The page is 520 screen heights tall in `lvh`, the
+same unit as the gradient's first stop, and the scroll covers 420 of them, so a position on the page
+divided by 420 is its place in the scroll. The top strip starts on the blue, meets the pink at
+23.81%, the night's first color at 92.86%, and ends partway into the last color. The bottom strip
+starts one screen down, already on the pink, meets the night's first color at 69.05%, and ends on
+the last color. Gradients and animations both interpolate in sRGB, so the strips match the page.
+Write the last stop as a plain color: a `color-mix()` stop makes the animation interpolate in oklab
+and drift.
 
-A page has only one background color, and Safari shows it past both ends. A fixed blue matches the
-top of the page but shows blue past the bottom, where the page is night. Animating the color against
-the scroll position keeps it matching whichever end you're at. The browser drives a scroll-driven
-animation itself, so no script runs on scroll. Browsers without scroll timelines keep the starting
-blue.
+Desktop Safari tints from `html`, so on this page `html` runs the top strip's keyframes too.
 
-### `html` or `body`
-
-The **gradient** works on either. When `html` has no background, browsers paint `body`'s across the
-whole page instead, and the two look the same. This demo puts it on `html`, which was tested on an
-iPhone.
-
-The **solid color** is safest on `html`. Once `html` has any background, `body`'s background only
-covers the body's own box and is no longer the page's color. This demo hasn't tested a color on
-`body` alone.
-
-### Why it's smoother than the strip hack
-
-It comes down to what has to happen on each frame while you scroll.
-
-**The strip hack** runs a chain for every scroll update:
-
-1. Safari scrolls the page, then tells JavaScript that a scroll happened.
-2. The script works out a color and changes the strips' style.
-3. The browser recalculates styles and repaints the strips.
-4. Safari notices the strips changed and re-tints its toolbars, which is separate interface drawing
-   outside the page.
-
-On iPhone, scrolling happens on its own fast path, and scroll events reach JavaScript slightly after
-the page has already moved. So the strips are always a frame or more behind the content, and any
-hiccup on the main thread shows up as stutter.
-
-**This page does far less per frame:**
-
-- **The gradient** is part of the page. Scrolling moves pixels that are already drawn.
-- **The hexagon** is fixed, so the browser keeps it on its own layer and leaves it in place while the
-  page moves under it.
-- **The background color** is the only thing that changes with the scroll, and a scroll-driven
-  animation ties it straight to the scroll position. No script runs, so it can't fall behind.
-
-The color isn't completely free: changing a background color still means repainting, though it's a
-cheap flat fill. The real gain is that nothing waits on JavaScript and nothing fights Safari's
-toolbar logic. The strip hack fakes the effect from outside the page; this is the page.
-
-### No JavaScript at all
-
-The page has no scripts. The menu button opens its panel with the HTML popover API
-(`popovertarget`), which also handles closing it on an outside tap or Escape, and the panel's
-animation is a CSS transition with `@starting-style`.
-
-### The gradient page's strips
-
-A strip is read as a color value, so a strip carrying the gradient itself would be sampled once and
-held. Instead each strip on the gradient page animates its `background-color` through the
-gradient's stops, placed where its own edge of the screen meets them. The page is 520 screen
-heights tall, in `lvh` like the gradient's first stop, and the scroll covers 420 of them. The top
-edge starts on the blue, meets the pink at one screen height, 23.81% of the scroll, the night's top
-at 75% of the page, 92.86%, and ends 23.08% of the way from there to the night's bottom. The bottom
-edge starts one screen down, already on the pink, meets the night's top at 69.05%, and ends on the
-night's bottom. Gradients and animations both interpolate linearly in sRGB, so the strips match the
-page within rounding, with one caveat: the last stop is written as a plain color, because a
-`color-mix()` stop makes the animation interpolate in oklab and drift off the gradient. On a phone
-the bottom edge sits a toolbar's height higher while the toolbar is showing, so the bottom strip
-runs slightly ahead until the toolbar collapses.
-
-### Pink and the bars' text
-
-Desktop Safari switches a tinted tab bar to dark text and icons once the tint is bright enough, and
-the gradient's pink crosses that line. The rule is in Safari rather than WebKit, so it was found by
-trying pinks of the same hue, darker each time, and watching the Mac's bar:
-
-| Tint | Greyscale | Contrast of white text | Desktop bar |
-|---|---|---|---|
-| Blue `#2f6bff` | 0.47 | 4.50:1 | Light text |
-| Pink `#ff8ac2`, the gradient's | 0.69 | 2.17:1 | Dark text |
-| Pink `#d472a1` | 0.57 | 3.12:1 | Dark text |
-| Pink `#b45f88` | 0.48 | 4.26:1 | Dark text |
-| Pink `#964f71` | 0.40 | 5.75:1 | Light text |
-
-A brightness cut doesn't fit: the pink at 0.48 flipped the bar while the blue at 0.47 did not. The
-contrast of white text against the tint does, with 4.5:1, the accessibility threshold for body
-text, as the line. Three passes and three fails sit on the right side of it, and the blue sits on it
-exactly.
-
-Only `html`'s solid color needed to change, since that is what desktop Safari tints from; the
-phone's bars come from the strips. So on the gradient page the pink stop in the shared keyframes
-is a custom property: the top strip reads the gradient's pink, and `html` reads `#964f71`. It is
-darker than it needs to be on purpose, for margin against a rule that is inferred rather than
-documented.
-
-### The edge strips
-
-Without `viewport-fit=cover`, the page stops short of the bars and Safari paints them itself. It
-reads a fixed element touching a screen edge, and reads it again whenever that element repaints,
-so the strips on the auto page run the same scroll-driven keyframes as `html` and the bars follow
-the scroll live. It reads the element's color value, not its pixels: the strips are at 10%
-opacity, the floor for a candidate, and a gradient mask fades their inner edge.
-
-What a strip can be, measured on an iPhone one change at a time. Safari's bars and X's in-app
-browser read the strips by the same mechanism but not by the same rules:
-
-| | Safari | X's in-app browser |
-|---|---|---|
-| Height | 12px read; the WebKit source says more than 10px | 20px read, 19px not |
-| 10% opacity | Read | Read |
-| Blur | Read | Read |
-| Gradient mask | Read | Read |
-| Box past the screen's edge | Read | Not read, however much is on screen |
-| Under the header | Not read: the top bar falls back to `html`'s color | Not read: the bar falls back to `html`'s color |
-| Viewport | Read under cover and auto | Read under cover and auto |
-
-Safari reads whatever is topmost at the center of the edge. The header covers that point at the
-top, and a header with no color makes Safari fall back to `html`'s background color for the top
-bar. On a solid page that is the strip's color anyway, which is why strips under the header looked
-fine there; the gradient page, where the top strip and `html` differ, showed the top bar shadowing
-`html` until the strips went above the header. Nothing covers the bottom center, so the bottom
-strip is read either way.
-
-Desktop Safari runs the other way. On the Mac a fixed edge's color is read once, before the first
-scroll, and then held, so when the strips are detected there they lock the tab tint to the first
-blue. Under the header the Mac falls back to `html`'s color and follows the scroll. So the strips
-sit above the header on touch devices only, through a `hover: none` media query, and stay under it
-on the Mac. How an element ends up on top makes no difference: explicit z-index and plain DOM
-order behave the same in all three browsers.
-
-In-app browsers draw an opaque bar of their own above the page. That bar reads a color once at
-load and then stops following `html`'s background. In X's in-app browser a `theme-color` meta tag
-kept equal to `html`'s color by a script had no effect, and the strips do move the bar, but only
-once the scroll comes to rest: WebKit delivers the strip's new color on every frame, and the
-in-app browser applies it when scrolling settles. When testing there, load the page with a fresh
-query string each time. The in-app browser keeps its own cache, and a stale copy looks exactly
-like a failed test.
-
-## What we saw on iPhone
-
-| Page setup | Bars and the area past each end |
-|---|---|
-| Fixed full-screen sky layer | Solid bars in the fixed layer's color |
-| Gradient only, no solid color (on `html` or `body`) | White |
-| Gradient on `html` over solid blue | Blue at both ends |
-| Gradient on `html`, solid color animated from blue to night | Blue at the top, night at the bottom |
-| Cover page plus fixed strips at each edge | Bars filled flat in the strips' color, hiding the page behind them |
+**Some colors flip the chrome to dark text.** Safari switches a tinted bar to dark text and icons
+once white text would have less than 4.5:1 contrast against the tint, as far as we can tell: the
+blue passes at 4.50:1, a pink at 4.26:1 flipped it, and the gradient's pink is at 2.17:1. The rule is
+Safari's, not WebKit's, so this is inferred from what passed and what didn't. On the gradient page
+the pink stop in the keyframes is a custom property: the strips keep the gradient's pink for the
+phone, and `html` takes a darker pink, `#964f71` at 5.75:1, for the Mac.
