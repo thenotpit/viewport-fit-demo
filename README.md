@@ -150,29 +150,22 @@ browser read the strips by the same mechanism but not by the same rules:
 | Blur | Read | Read |
 | Gradient mask | Read | Read |
 | Box past the screen's edge | Read | Not read, however much is on screen |
-| Under the header | Read | Read |
+| Under the header | Not read: the top bar falls back to `html`'s color | Not read: the bar falls back to `html`'s color |
 | Viewport | Read under cover and auto | Read under cover and auto |
+
+Safari reads whatever is topmost at the center of the edge. The header covers that point at the
+top, and a header with no color makes Safari fall back to `html`'s background color for the top
+bar. On a solid page that is the strip's color anyway, which is why strips under the header looked
+fine there; the gradient page, where the top strip and `html` differ, showed the top bar shadowing
+`html` until the strips went above the header. Nothing covers the bottom center, so the bottom
+strip is read either way.
 
 Desktop Safari runs the other way. On the Mac a fixed edge's color is read once, before the first
 scroll, and then held, so when the strips are detected there they lock the tab tint to the first
-blue. With the strips above the header the Mac detects them; under the header it does not, and
-follows `html`'s color instead, as it does on the page without strips. The strips therefore carry
-no z-index: the phone and the in-app browser read them under the header, and the Mac ignores
-them. How the strips end up underneath makes no difference. Leaving them without a z-index and
-first in the markup, or giving every other element an explicit z-index above them, behaves the
-same in all three browsers; what is read depends on which element is on top at the edge, not on
-how it got there.
-
-The soft inner edge is a mask rather than a blur because a blur fades at the screen edge as well,
-and hiding that fade needs the box to overhang the edge, which X does not read. A mask paints only
-inside the box.
-
-The strips do not change the viewport. Under `viewport-fit=cover` the page still runs behind the
-bars and the safe-area insets are still real, but Safari fills the bars with the strips' color and
-the page stops showing through. On a solid page that looks the same as the default viewport; on
-the gradient page it would be a flat band over the gradient. That is why the cover page has no
-strips: the choice is between bars the page shows through, with the in-app browser's bar holding
-its first color, and bars painted from the strips that the in-app browser follows.
+blue. Under the header the Mac falls back to `html`'s color and follows the scroll. So the strips
+sit above the header on touch devices only, through a `hover: none` media query, and stay under it
+on the Mac. How an element ends up on top makes no difference: explicit z-index and plain DOM
+order behave the same in all three browsers.
 
 In-app browsers draw an opaque bar of their own above the page. That bar reads a color once at
 load and then stops following `html`'s background. In X's in-app browser a `theme-color` meta tag

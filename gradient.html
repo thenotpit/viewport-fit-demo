@@ -43,12 +43,6 @@
        * the pink, meets the night's top at 69.05%, and ends on the night's bottom. The gradient and
        * the animation both interpolate linearly in sRGB, so the strips match the page.
        */
-      /* Test: the strips themselves visible, to compare against the gradient beside them. */
-      .edge {
-        opacity: 1;
-        mask-image: none;
-      }
-
       @supports (animation-timeline: scroll()) {
         .edge-top {
           animation: edge-top-color linear both;
