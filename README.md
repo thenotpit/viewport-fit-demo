@@ -75,14 +75,14 @@ run the same keyframes as `html`. What a strip can be, found by changing one thi
 
 **Safari on the Mac and the iPad**
 
-- Reads a fixed edge once, before the first scroll, and holds it. A strip it can see locks the tab
-  bar to the first color. WebKit files the iPad with the Mac here, not the iPhone, and an iPad
-  confirmed it: `viewport-fit=cover` works, and strips it can see lock the bar.
-- So they get no strips. The strips are hidden on everything but phones, touch devices whose
-  shorter side is under 500px, and the Mac and iPad follow `html`'s background color instead,
-  live. Under the header wasn't enough on the iPad: its bar overlaps the page like the iPhone's,
-  and it painted a fill behind the bar in the first color that never refreshed, a blue cast over
-  the live tint.
+- Don't give them strips. Both read a fixed edge once, before the first scroll, and hold it, so a
+  strip they can see locks the bar to the first color. The iPad also paints a fill behind its bar
+  in that first color and never refreshes it, which shows as a blue cast even when the strip is
+  tucked under the header. WebKit files the iPad with the Mac here, not the iPhone, and an iPad
+  confirmed it.
+- Without strips, both follow `html`'s background color, live. So the strips are shown by a media
+  query on phones only: touch devices whose shorter side is under 500px. Hiding them is the fix;
+  layering them underneath is not.
 
 **X's in-app browser**
 
