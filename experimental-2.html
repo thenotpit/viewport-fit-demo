@@ -138,13 +138,13 @@
       }
 
       /*
-       * On the Mac and the iPad the bar is glass over the page, not a painted fill, so what shows is the
-       * strip as painted: 10% of a color over black is black. Everything that is not a phone gets the
-       * strips at 20% to test that.
+       * On the Mac and the iPad the bar may be glass over the page rather than a painted fill, in which
+       * case what shows is the strip as painted, and a faint color over black is black. Everything that
+       * is not a phone gets the strips at full opacity to test that; 20% made no difference.
        */
       @media not ((hover: none) and ((max-width: 500px) or (max-height: 500px))) {
         .edge {
-          opacity: 0.2;
+          opacity: 1;
         }
       }
 

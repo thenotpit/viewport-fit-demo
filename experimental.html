@@ -86,14 +86,21 @@
         animation-timeline: auto;
       }
 
+      /*
+       * The flash also counts its z-index down from a high value, so whichever flash started most
+       * recently is on top, whatever the shapes' order in the markup. Without this, a flash from a shape
+       * earlier in the page sat under one from a later shape that was still fading.
+       */
       @keyframes flash {
         from {
           background-color: var(--c);
           visibility: visible;
+          z-index: 1000;
         }
         to {
           background-color: var(--sky);
           visibility: hidden;
+          z-index: 3;
         }
       }
 
