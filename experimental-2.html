@@ -12,8 +12,7 @@
     <style>
       /* Black, and still: html's scroll-driven color is off. */
       html {
-        /* Test: the blue instead of black, to see whether the black page is what keeps the iPad's bar dark. */
-        background-color: var(--day-top);
+        background-color: #000;
         animation: none;
       }
 
@@ -24,21 +23,11 @@
        * started at a different point in the lap by a negative delay. All of these colors are too light
        * for white text, so on desktop the strips take a darker version of the lap, below.
        */
-      /* Test: the pulse page's blue-to-pink on the strips, everything else on this page unchanged. */
       .edge {
         display: block;
         z-index: 2;
-        animation: pulse-test 1s ease-in-out infinite alternate;
+        animation: holo 3s linear infinite;
         animation-timeline: auto;
-      }
-
-      @keyframes pulse-test {
-        from {
-          background-color: var(--day-top);
-        }
-        to {
-          background-color: var(--day-bottom);
-        }
       }
 
       .edge-bottom {
@@ -144,18 +133,7 @@
        */
       @media (hover: hover) and (pointer: fine) {
         .edge {
-          animation-name: pulse-test; /* Test: was holo-dark. */
-        }
-      }
-
-      /*
-       * On the Mac and the iPad the bar may be glass over the page rather than a painted fill, in which
-       * case what shows is the strip as painted, and a faint color over black is black. Everything that
-       * is not a phone gets the strips at full opacity to test that; 20% made no difference.
-       */
-      @media not ((hover: none) and ((max-width: 500px) or (max-height: 500px))) {
-        .edge {
-          opacity: 1;
+          animation-name: holo-dark;
         }
       }
 
