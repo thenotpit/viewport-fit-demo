@@ -9,7 +9,7 @@
     -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>viewport-fit=cover demo: experimental</title>
-    <link rel="stylesheet" href="styles.css?v=431a6bb9" />
+    <link rel="stylesheet" href="styles.css?v=480f71e2" />
     <style>
       /* One flat blue: html's scroll-driven color is off, so the strips are the only thing changing. */
       html {
@@ -23,8 +23,9 @@
        * follow, and slows back down, on a loop. CSS cannot animate an animation's own speed, so the
        * ramp is one long keyframe list: each keyframe is a beat, and they bunch up and spread out.
        * WebKit re-reads a fixed edge whenever the element repaints, so this moves the bars with no
-       * scroll at all. The Mac and the iPad stop re-reading the top edge after the first scroll, so
-       * there the pulse runs until you scroll and then locks.
+       * scroll at all. The Mac and the iPad stop re-reading the top edge at the first scroll or the first
+       * tap, whichever comes first, so there the pulse runs until you touch the page and then locks.
+       * That includes tapping a shape: the flash never reaches the bar on those two.
        */
       .edge {
         display: block;
@@ -487,7 +488,8 @@
         stays blue. If the bars pulse, Safari reads a strip whenever it repaints, not only on scroll.<br>
         Tap a white shape: the strips jump to white, fade back to blue, and the pulse starts over. Still
         no script; the shapes are labels for hidden radio buttons.<br>
-        On the Mac and iPad, expect the pulse to run until the first scroll and then lock.
+        On the Mac and iPad, expect the pulse to run until the first scroll or tap and then lock, so the
+        tap flash never reaches their bars.
       </p>
     </div>
 

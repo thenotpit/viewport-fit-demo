@@ -49,7 +49,7 @@
  * at the top, and a header with no color makes Safari fall back to html's background color for the
  * top bar. On a solid page that is the strip's color anyway; on the gradient page it is not. So on
  * phones the strips sit above the header. On the Mac and the iPad there are no strips at all:
- * both read a fixed edge's color once, before the first scroll, and hold it, so a strip they
+ * both read a fixed edge's color only until the first scroll or tap, then hold it, so a strip they
  * can see would lock the tab tint to the first color, while html's color they follow.
  */
 .edge {

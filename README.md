@@ -79,8 +79,8 @@ run the same keyframes as `html`. What a strip can be, found by changing one thi
 
 **Safari on the Mac and the iPad**
 
-- Don't give them strips. Both read a fixed edge once, before the first scroll, and hold it, so a
-  strip they can see locks the bar to the first color. The iPad also paints a fill behind its bar
+- Don't give them strips. Both read a fixed edge only until the first scroll or the first tap,
+  whichever comes first, then hold it, so a strip they can see locks the bar to the first color. The iPad also paints a fill behind its bar
   in that first color and never refreshes it, which shows as a blue cast even when the strip is
   tucked under the header. WebKit files the iPad with the Mac here, not the iPhone, and an iPad
   confirmed it.
