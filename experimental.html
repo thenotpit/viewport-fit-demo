@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <!--
-      An experiment. The strips are on every device, the page sits still on one flat blue, and tapping
+      An experiment. The strips are on every device, the page sits still on a night sky, and tapping
       any shape flashes the strips in that shape's color and fades them back to blue. The question is whether the
       bars follow a strip that changes color with no scroll, as often as you can tap.
     -->
@@ -12,9 +12,32 @@
     <link rel="stylesheet" href="styles.css?v=480f71e2" />
     <style>
       /* One flat blue: html's scroll-driven color is off, so the strips are the only thing changing. */
+      :root {
+        --sky: #130a2e;
+      }
+
+      /* The night sky, still: html's scroll-driven color is off, so the strips are the only thing changing. */
       html {
-        background-color: var(--day-top);
+        background-color: var(--sky);
         animation: none;
+      }
+
+      .hex svg {
+        fill: #3b1270;
+        opacity: 0.6;
+      }
+
+      /* The call to action, under the heading in the hexagon. */
+      .hex .cta {
+        grid-area: 1 / 1;
+        position: relative;
+        place-self: center;
+        width: auto;
+        margin: 3.6em 0 0;
+        font-size: 0.75rem;
+        letter-spacing: 0.25em;
+        text-align: center;
+        color: rgb(255 255 255 / 0.85);
       }
 
       /*
@@ -25,9 +48,11 @@
        * element starts its animation from the top. The boxes are required and the pairs key off
        * :user-valid and :user-invalid, which match only once the user has changed a box, so nothing
        * flashes at load. Each flash ends by hiding its pair, and a plain blue pair underneath keeps the
-       * bars flat between taps. The shape colors are sixteen hues round the wheel, each at the greatest
-       * lightness that keeps white text at 4.5:1 or better against it, so none of them trips desktop
-       * Safari's switch to dark text. The Mac and the iPad lock the bar at the first tap regardless.
+       * bars flat between taps. The palette is synthwave: a night sky, and shapes in hot pink, magenta,
+       * violet, cyan, orange and yellow. The cyan and yellow are too light for white text, so each
+       * shape's flash uses its hue toned down to where white text keeps 4.5:1, and none of the flashes
+       * trips desktop Safari's switch to dark text. The Mac and the iPad lock the bar at the first tap
+       * regardless.
        */
       .shape {
         cursor: pointer;
@@ -42,6 +67,7 @@
       .edge {
         display: block;
         z-index: 2;
+        background-color: var(--sky);
         animation: none;
       }
 
@@ -57,89 +83,137 @@
           visibility: visible;
         }
         to {
-          background-color: var(--day-top);
+          background-color: var(--sky);
           visibility: hidden;
         }
       }
 
-      .field label:nth-of-type(1) .shape,
+      .field label:nth-of-type(1) .shape {
+        --c: #ff2d95;
+      }
+
       .edge[data-shape="1"] {
-        --c: #d61b1b;
+        --c: #d5006a;
       }
 
-      .field label:nth-of-type(2) .shape,
+      .field label:nth-of-type(2) .shape {
+        --c: #19d3ff;
+      }
+
       .edge[data-shape="2"] {
-        --c: #b15016;
+        --c: #007793;
       }
 
-      .field label:nth-of-type(3) .shape,
+      .field label:nth-of-type(3) .shape {
+        --c: #ff6a1f;
+      }
+
       .edge[data-shape="3"] {
-        --c: #866911;
+        --c: #c24100;
       }
 
-      .field label:nth-of-type(4) .shape,
+      .field label:nth-of-type(4) .shape {
+        --c: #8a2be2;
+      }
+
       .edge[data-shape="4"] {
-        --c: #67730e;
+        --c: #8a2be2;
       }
 
-      .field label:nth-of-type(5) .shape,
+      .field label:nth-of-type(5) .shape {
+        --c: #ffd23f;
+      }
+
       .edge[data-shape="5"] {
-        --c: #457a0f;
+        --c: #886800;
       }
 
-      .field label:nth-of-type(6) .shape,
+      .field label:nth-of-type(6) .shape {
+        --c: #ff3d4a;
+      }
+
       .edge[data-shape="6"] {
-        --c: #1d7e10;
+        --c: #dc000f;
       }
 
-      .field label:nth-of-type(7) .shape,
+      .field label:nth-of-type(7) .shape {
+        --c: #2a7bff;
+      }
+
       .edge[data-shape="7"] {
-        --c: #107e2b;
+        --c: #005ffb;
       }
 
-      .field label:nth-of-type(8) .shape,
+      .field label:nth-of-type(8) .shape {
+        --c: #e020b0;
+      }
+
       .edge[data-shape="8"] {
-        --c: #0f7c53;
+        --c: #c61c9b;
       }
 
-      .field label:nth-of-type(9) .shape,
+      .field label:nth-of-type(9) .shape {
+        --c: #ffb01f;
+      }
+
       .edge[data-shape="9"] {
-        --c: #0f7979;
+        --c: #976200;
       }
 
-      .field label:nth-of-type(10) .shape,
+      .field label:nth-of-type(10) .shape {
+        --c: #00bfd8;
+      }
+
       .edge[data-shape="10"] {
-        --c: #1572aa;
+        --c: #007888;
       }
 
-      .field label:nth-of-type(11) .shape,
+      .field label:nth-of-type(11) .shape {
+        --c: #b06bff;
+      }
+
       .edge[data-shape="11"] {
-        --c: #3662e6;
+        --c: #902fff;
       }
 
-      .field label:nth-of-type(12) .shape,
+      .field label:nth-of-type(12) .shape {
+        --c: #ff5e7e;
+      }
+
       .edge[data-shape="12"] {
-        --c: #6754ea;
+        --c: #db002b;
       }
 
-      .field label:nth-of-type(13) .shape,
+      .field label:nth-of-type(13) .shape {
+        --c: #6a1fd0;
+      }
+
       .edge[data-shape="13"] {
-        --c: #923de7;
+        --c: #6a1fd0;
       }
 
-      .field label:nth-of-type(14) .shape,
+      .field label:nth-of-type(14) .shape {
+        --c: #4fd5ff;
+      }
+
       .edge[data-shape="14"] {
-        --c: #b719cd;
+        --c: #00769a;
       }
 
-      .field label:nth-of-type(15) .shape,
+      .field label:nth-of-type(15) .shape {
+        --c: #ff8040;
+      }
+
       .edge[data-shape="15"] {
-        --c: #c7199b;
+        --c: #c24100;
       }
 
-      .field label:nth-of-type(16) .shape,
+      .field label:nth-of-type(16) .shape {
+        --c: #ff1f6f;
+      }
+
       .edge[data-shape="16"] {
-        --c: #d21a5f;
+        --c: #d8004d;
       }
 
       body:has(#tap-1:user-valid) .edge[data-shape="1"][data-state="checked"],
@@ -319,12 +393,13 @@
           <path d="M50 3 90.7 26.5v47L50 97 9.3 73.5v-47Z" />
         </svg>
         <h1>Experimental.</h1>
+        <p class="cta">TAP A SHAPE</p>
       </div>
       <p>
-        The strips are on every device here and the page sits still on one flat blue. Every shape has a
-        color of its own. Tap one, as often as you like: the strips jump to its color and fade back to
-        blue over a second, with no scrolling involved and no script. Every color keeps white text at
-        4.5:1 or better, so none of them trips the switch to dark text.<br>
+        The strips are on every device here and the page sits still on a night sky. Every shape has a
+        color of its own. Tap one, as often as you like: the strips jump to that color and fade back into
+        the sky over a second, with no scrolling involved and no script. The cyan and yellow are too light
+        for white text, so their flashes use the same hue toned down to keep 4.5:1.<br>
         On the Mac and iPad the first tap locks the bar, so the flash never reaches it there.
       </p>
     </div>
