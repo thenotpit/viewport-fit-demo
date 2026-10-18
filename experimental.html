@@ -314,11 +314,143 @@
           background-color: var(--day-bottom);
         }
       }
+      /*
+       * Tap a white shape and the strips jump to white, fade to blue over a second, and the pulse starts
+       * over, with no script. Each shape is a label for a hidden radio button, and there is one pair of
+       * strips per shape, shown only while that shape's radio is checked. A newly shown element starts
+       * its animations from the top, so each tap on a new shape gets the whole sequence: the flash first,
+       * and the pulse a second later, at blue, where the flash ends. Tapping the same shape twice does
+       * nothing, since nothing changes. Until any tap, the default pair pulses on its own.
+       */
+      .shape {
+        cursor: pointer;
+      }
+
+      .field label {
+        display: contents;
+      }
+
+      .edge {
+        display: none;
+      }
+
+      body:not(:has(input[name="tap"]:checked)) .edge[data-set="0"] {
+        display: block;
+      }
+
+      .edge:not([data-set="0"]) {
+        animation: flash 1s ease-out, pulse 8.25s linear 1s infinite;
+      }
+
+      @keyframes flash {
+        from {
+          background-color: #fff;
+        }
+        to {
+          background-color: var(--day-top);
+        }
+      }
+
+      body:has(#tap-1:checked) .edge[data-set="1"] {
+        display: block;
+      }
+
+      body:has(#tap-2:checked) .edge[data-set="2"] {
+        display: block;
+      }
+
+      body:has(#tap-3:checked) .edge[data-set="3"] {
+        display: block;
+      }
+
+      body:has(#tap-4:checked) .edge[data-set="4"] {
+        display: block;
+      }
+
+      body:has(#tap-5:checked) .edge[data-set="5"] {
+        display: block;
+      }
+
+      body:has(#tap-6:checked) .edge[data-set="6"] {
+        display: block;
+      }
+
+      body:has(#tap-7:checked) .edge[data-set="7"] {
+        display: block;
+      }
+
+      body:has(#tap-8:checked) .edge[data-set="8"] {
+        display: block;
+      }
+
+      body:has(#tap-9:checked) .edge[data-set="9"] {
+        display: block;
+      }
+
+      body:has(#tap-10:checked) .edge[data-set="10"] {
+        display: block;
+      }
+
+      body:has(#tap-11:checked) .edge[data-set="11"] {
+        display: block;
+      }
+
+      body:has(#tap-12:checked) .edge[data-set="12"] {
+        display: block;
+      }
+
+      body:has(#tap-13:checked) .edge[data-set="13"] {
+        display: block;
+      }
+
+      body:has(#tap-14:checked) .edge[data-set="14"] {
+        display: block;
+      }
+
+      body:has(#tap-15:checked) .edge[data-set="15"] {
+        display: block;
+      }
+
+      body:has(#tap-16:checked) .edge[data-set="16"] {
+        display: block;
+      }
     </style>
   </head>
   <body>
-    <div class="edge edge-top" aria-hidden="true"></div>
-    <div class="edge edge-bottom" aria-hidden="true"></div>
+    <div class="edge edge-top" data-set="0" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-set="0" aria-hidden="true"></div>
+    <div class="edge edge-top" data-set="1" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-set="1" aria-hidden="true"></div>
+    <div class="edge edge-top" data-set="2" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-set="2" aria-hidden="true"></div>
+    <div class="edge edge-top" data-set="3" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-set="3" aria-hidden="true"></div>
+    <div class="edge edge-top" data-set="4" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-set="4" aria-hidden="true"></div>
+    <div class="edge edge-top" data-set="5" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-set="5" aria-hidden="true"></div>
+    <div class="edge edge-top" data-set="6" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-set="6" aria-hidden="true"></div>
+    <div class="edge edge-top" data-set="7" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-set="7" aria-hidden="true"></div>
+    <div class="edge edge-top" data-set="8" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-set="8" aria-hidden="true"></div>
+    <div class="edge edge-top" data-set="9" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-set="9" aria-hidden="true"></div>
+    <div class="edge edge-top" data-set="10" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-set="10" aria-hidden="true"></div>
+    <div class="edge edge-top" data-set="11" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-set="11" aria-hidden="true"></div>
+    <div class="edge edge-top" data-set="12" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-set="12" aria-hidden="true"></div>
+    <div class="edge edge-top" data-set="13" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-set="13" aria-hidden="true"></div>
+    <div class="edge edge-top" data-set="14" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-set="14" aria-hidden="true"></div>
+    <div class="edge edge-top" data-set="15" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-set="15" aria-hidden="true"></div>
+    <div class="edge edge-top" data-set="16" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-set="16" aria-hidden="true"></div>
 
     <header class="bar">
       <svg viewBox="0 0 32 32" role="img" aria-label="Demo">
@@ -353,59 +485,109 @@
         The strips are on every device here and pulse between blue and pink with no scrolling involved,
         starting at four beats a second, speeding up to sixteen, and slowing back down. The page itself
         stays blue. If the bars pulse, Safari reads a strip whenever it repaints, not only on scroll.<br>
+        Tap a white shape: the strips jump to white, fade back to blue, and the pulse starts over. Still
+        no script; the shapes are labels for hidden radio buttons.<br>
         On the Mac and iPad, expect the pulse to run until the first scroll and then lock.
       </p>
     </div>
 
     <main class="field">
+      <input type="radio" name="tap" id="tap-1" hidden />
+      <input type="radio" name="tap" id="tap-2" hidden />
+      <input type="radio" name="tap" id="tap-3" hidden />
+      <input type="radio" name="tap" id="tap-4" hidden />
+      <input type="radio" name="tap" id="tap-5" hidden />
+      <input type="radio" name="tap" id="tap-6" hidden />
+      <input type="radio" name="tap" id="tap-7" hidden />
+      <input type="radio" name="tap" id="tap-8" hidden />
+      <input type="radio" name="tap" id="tap-9" hidden />
+      <input type="radio" name="tap" id="tap-10" hidden />
+      <input type="radio" name="tap" id="tap-11" hidden />
+      <input type="radio" name="tap" id="tap-12" hidden />
+      <input type="radio" name="tap" id="tap-13" hidden />
+      <input type="radio" name="tap" id="tap-14" hidden />
+      <input type="radio" name="tap" id="tap-15" hidden />
+      <input type="radio" name="tap" id="tap-16" hidden />
+      <label for="tap-1">
       <svg class="shape" style="--x: 10%; --y: 5%; --s: 6rem" viewBox="0 0 100 100" aria-hidden="true">
         <circle cx="50" cy="50" r="46" />
       </svg>
+      </label>
+      <label for="tap-2">
       <svg class="shape" style="--x: 60%; --y: 9%; --s: 9rem" viewBox="0 0 100 100" aria-hidden="true">
         <circle class="line" cx="50" cy="50" r="44" />
       </svg>
+      </label>
+      <label for="tap-3">
       <svg class="shape" style="--x: 30%; --y: 17%; --s: 7rem" viewBox="0 0 100 100" aria-hidden="true">
         <path d="M50 6 96 90H4Z" />
       </svg>
+      </label>
+      <label for="tap-4">
       <svg class="shape" style="--x: 72%; --y: 24%; --s: 5rem; --r: 18deg" viewBox="0 0 100 100" aria-hidden="true">
         <rect x="6" y="6" width="88" height="88" rx="18" />
       </svg>
+      </label>
+      <label for="tap-5">
       <svg class="shape" style="--x: 12%; --y: 29%; --s: 4rem" viewBox="0 0 100 100" aria-hidden="true">
         <path class="line" d="M50 10v80M10 50h80" stroke-width="16" />
       </svg>
+      </label>
+      <label for="tap-6">
       <svg class="shape" style="--x: 50%; --y: 34%; --s: 8rem" viewBox="0 0 100 100" aria-hidden="true">
         <path d="M50 4l13.5 27.4 30.2 4.4-21.9 21.3 5.2 30.1L50 73 23 87.2l5.2-30.1L6.3 35.8l30.2-4.4Z" />
       </svg>
+      </label>
+      <label for="tap-7">
       <svg class="shape" style="--x: 82%; --y: 40%; --s: 3rem" viewBox="0 0 100 100" aria-hidden="true">
         <circle cx="50" cy="50" r="46" />
       </svg>
+      </label>
+      <label for="tap-8">
       <svg class="shape" style="--x: 16%; --y: 44%; --s: 7rem; --r: 30deg" viewBox="0 0 100 100" aria-hidden="true">
         <rect class="line" x="8" y="8" width="84" height="84" />
       </svg>
+      </label>
+      <label for="tap-9">
       <svg class="shape" style="--x: 46%; --y: 52%; --s: 10rem" viewBox="0 0 100 100" aria-hidden="true">
         <path class="line" d="M6 50l11-14 11 14 11-14 11 14 11-14 11 14 11-14 11 14" />
       </svg>
+      </label>
+      <label for="tap-10">
       <svg class="shape" style="--x: 70%; --y: 58%; --s: 6rem; --r: -12deg" viewBox="0 0 100 100" aria-hidden="true">
         <path class="line" d="M50 8 92 86H8Z" />
       </svg>
+      </label>
+      <label for="tap-11">
       <svg class="shape" style="--x: 8%; --y: 63%; --s: 8rem" viewBox="0 0 100 100" aria-hidden="true">
         <path d="M4 70a46 46 0 0 1 92 0Z" />
       </svg>
+      </label>
+      <label for="tap-12">
       <svg class="shape" style="--x: 40%; --y: 69%; --s: 4rem" viewBox="0 0 100 100" aria-hidden="true">
         <circle class="line" cx="50" cy="50" r="40" stroke-width="10" />
       </svg>
+      </label>
+      <label for="tap-13">
       <svg class="shape" style="--x: 64%; --y: 75%; --s: 7rem" viewBox="0 0 100 100" aria-hidden="true">
         <path d="M50 4 96 50 50 96 4 50Z" />
       </svg>
+      </label>
+      <label for="tap-14">
       <svg class="shape" style="--x: 18%; --y: 82%; --s: 10rem" viewBox="0 0 100 100" aria-hidden="true">
         <circle cx="50" cy="50" r="46" />
       </svg>
+      </label>
+      <label for="tap-15">
       <svg class="shape" style="--x: 78%; --y: 88%; --s: 5rem; --r: 45deg" viewBox="0 0 100 100" aria-hidden="true">
         <path class="line" d="M50 10v80M10 50h80" stroke-width="14" />
       </svg>
+      </label>
+      <label for="tap-16">
       <svg class="shape" style="--x: 42%; --y: 93%; --s: 4rem" viewBox="0 0 100 100" aria-hidden="true">
         <path d="M50 4l13.5 27.4 30.2 4.4-21.9 21.3 5.2 30.1L50 73 23 87.2l5.2-30.1L6.3 35.8l30.2-4.4Z" />
       </svg>
+      </label>
     </main>
 
   </body>
