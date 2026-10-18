@@ -109,6 +109,9 @@ run the same keyframes as `html`. What a strip can be, found by changing one thi
   order behave the same in all three browsers.
 - When testing in X, load the page with a fresh query string each time. It keeps its own cache, and
   a stale copy looks exactly like a failed test.
+- A device in Dark Mode keeps Safari's bars dark whatever the page does, on the iPad at least. A page
+  can't opt out: declaring `color-scheme: light` changes the page's own rendering, not the bars.
+  It also looks exactly like a failed test.
 
 ## Variable strips
 
