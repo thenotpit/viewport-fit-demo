@@ -98,6 +98,9 @@ run the same keyframes as `html`. What a strip can be, found by changing one thi
 - Updates only once the scroll comes to rest. WebKit sends the new color every frame; the in-app
   browser applies it when scrolling settles.
 - A `theme-color` meta tag, even one kept in sync by script, does nothing there.
+- Has to be the same strip from load. A strip that changes color in place moves the bar; a strip
+  that appears mid-session, even one already at its color, is ignored. Safari on the iPhone reads
+  either.
 
 **Notes**
 
@@ -148,13 +151,15 @@ second one does.
 - **The Mac and the iPad lock at the first touch, not the first scroll.** The pulse ran on both until
   the first scroll or the first tap, whichever came first, then held. The Mac also switched its bar to
   dark text on every beat through the pink; the iPad never does.
-- **Tap to flash, with no script.** Each shape is a label for a hidden checkbox, and it has two pairs
-  of strips that take turns as the box flips, so every tap shows a fresh pair and a fresh animation.
-  The boxes are required and the pairs key off `:user-valid` and `:user-invalid`, so nothing flashes
-  at load. Each flash counts its z-index down as it fades, so the newest flash is always on top; before
-  that, tapping shapes upward through the page landed each flash under the previous one, since lower
-  shapes come later in the markup. `touch-action: manipulation` on the shapes stops Safari holding
-  each tap for a possible double-tap zoom, which had been swallowing fast taps.
+- **Tap to flash, with no script.** The strips are one pair that exists from load, and only their
+  color changes. Each shape is a label for a hidden checkbox, which is what makes it a tap target to
+  WebKit, and the strips key off the label's `:active` state: while a shape is pressed they take its
+  color at once, and on release they transition back to the sky over a second. Only one shape can be
+  pressed at a time, so the newest tap always has the strips and the same shape can be tapped as fast
+  as you like. The first version gave every tap a fresh pair of strips with a one-shot animation; the
+  iPhone flashed, but X's in-app browser never moved, and that is where the rule above came from.
+  `touch-action: manipulation` on the shapes stops Safari holding each tap for a possible double-tap
+  zoom, which had been swallowing fast taps.
 - **Light colors flip the Mac.** The pale holographic set, all of them under 4.5:1 for white text,
   put the Mac's bar in dark text for the whole lap, so on desktop the strips run a dark, saturated
   version of the same hues. On the tap page the shapes stay vivid and each flash uses the shape's hue
