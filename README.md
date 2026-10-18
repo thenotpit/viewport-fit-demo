@@ -15,10 +15,10 @@ Three pages, switched from the menu:
   bars from them.
 - **Variable Strips** (`gradient.html`): the strips again, on a gradient. The top strip follows the
   gradient's color at the top of the screen, the bottom strip its color at the bottom.
-- **Experimental** (`experimental.html`): the strips on every device, pulsing on a timer with the
-  page sitting still, speeding up and slowing down, to see how fast the bars follow a strip that
-  changes without a scroll. They kept up at sixteen beats a second on the iPhone.
-- **Experimental 2** (`experimental-2.html`): the same, drifting through pale holographic colors.
+- **Experimental** (`experimental.html`): the strips on every device, with the page sitting still. Tap a
+  shape and the strips flash that shape's color and fade back, as fast as you can tap, with no script.
+- **Experimental 2** (`experimental-2.html`): the strips and every shape drifting through pale
+  holographic colors on a black page, each on its own offset.
 
 ## The basics
 
@@ -134,3 +134,31 @@ blue passes at 4.50:1, a pink at 4.26:1 flipped it, and the gradient's pink is a
 Safari's, not WebKit's, so this is inferred from what passed and what didn't. On the gradient page
 the pink stop in the keyframes is a custom property: the strips keep the gradient's pink for the
 phone, and `html` takes a darker pink, `#964f71` at 5.75:1, for the Mac.
+
+## What the experiments showed
+
+The two experimental pages exist to poke at the mechanism rather than to look good, though the
+second one does.
+
+- **Repaint, not scroll, is the trigger.** A strip changing color on a timer, with the page sitting
+  still, moves the iPhone's bars and X's in-app browser's bar just the same. WebKit re-reads a fixed
+  edge whenever the element repaints; the scroll was never the point.
+- **It keeps up at any speed we tried.** The bars followed a strip pulsing blue to pink at sixteen
+  beats a second on the iPhone, which is a handful of frames per beat. We stopped there.
+- **The Mac and the iPad lock at the first touch, not the first scroll.** The pulse ran on both until
+  the first scroll or the first tap, whichever came first, then held. The Mac also switched its bar to
+  dark text on every beat through the pink; the iPad never does.
+- **Tap to flash, with no script.** Each shape is a label for a hidden checkbox, and it has two pairs
+  of strips that take turns as the box flips, so every tap shows a fresh pair and a fresh animation.
+  The boxes are required and the pairs key off `:user-valid` and `:user-invalid`, so nothing flashes
+  at load. Each flash counts its z-index down as it fades, so the newest flash is always on top; before
+  that, tapping shapes upward through the page landed each flash under the previous one, since lower
+  shapes come later in the markup. `touch-action: manipulation` on the shapes stops Safari holding
+  each tap for a possible double-tap zoom, which had been swallowing fast taps.
+- **Light colors flip the Mac.** The pale holographic set, all of them under 4.5:1 for white text,
+  put the Mac's bar in dark text for the whole lap, so on desktop the strips run a dark, saturated
+  version of the same hues. On the tap page the shapes stay vivid and each flash uses the shape's hue
+  toned down to the line.
+- **Dark Mode is not a page problem.** With the device in Dark Mode the bars stay dark whatever the
+  page does, and the first round of "why is the iPad black" was an iPad in Dark Mode. Declaring the
+  page `color-scheme: light` changes nothing about the bars.
