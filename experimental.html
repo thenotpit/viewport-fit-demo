@@ -232,6 +232,155 @@
         --c: #d8004d;
       }
 
+      /*
+       * The tapped shape bumps, so a tap is visibly received even where the bars ignore it. The two
+       * bump animations are identical; switching between them on each state flip is what restarts it.
+       */
+      .shape {
+        animation: none 0.3s ease-out;
+        transform-origin: center;
+      }
+
+      @keyframes bump-a {
+        50% {
+          scale: 1.18;
+        }
+      }
+
+      @keyframes bump-b {
+        50% {
+          scale: 1.18;
+        }
+      }
+
+      body:has(#tap-1:user-valid) .field label:nth-of-type(1) .shape {
+        animation-name: bump-a;
+      }
+
+      body:has(#tap-1:user-invalid) .field label:nth-of-type(1) .shape {
+        animation-name: bump-b;
+      }
+
+      body:has(#tap-2:user-valid) .field label:nth-of-type(2) .shape {
+        animation-name: bump-a;
+      }
+
+      body:has(#tap-2:user-invalid) .field label:nth-of-type(2) .shape {
+        animation-name: bump-b;
+      }
+
+      body:has(#tap-3:user-valid) .field label:nth-of-type(3) .shape {
+        animation-name: bump-a;
+      }
+
+      body:has(#tap-3:user-invalid) .field label:nth-of-type(3) .shape {
+        animation-name: bump-b;
+      }
+
+      body:has(#tap-4:user-valid) .field label:nth-of-type(4) .shape {
+        animation-name: bump-a;
+      }
+
+      body:has(#tap-4:user-invalid) .field label:nth-of-type(4) .shape {
+        animation-name: bump-b;
+      }
+
+      body:has(#tap-5:user-valid) .field label:nth-of-type(5) .shape {
+        animation-name: bump-a;
+      }
+
+      body:has(#tap-5:user-invalid) .field label:nth-of-type(5) .shape {
+        animation-name: bump-b;
+      }
+
+      body:has(#tap-6:user-valid) .field label:nth-of-type(6) .shape {
+        animation-name: bump-a;
+      }
+
+      body:has(#tap-6:user-invalid) .field label:nth-of-type(6) .shape {
+        animation-name: bump-b;
+      }
+
+      body:has(#tap-7:user-valid) .field label:nth-of-type(7) .shape {
+        animation-name: bump-a;
+      }
+
+      body:has(#tap-7:user-invalid) .field label:nth-of-type(7) .shape {
+        animation-name: bump-b;
+      }
+
+      body:has(#tap-8:user-valid) .field label:nth-of-type(8) .shape {
+        animation-name: bump-a;
+      }
+
+      body:has(#tap-8:user-invalid) .field label:nth-of-type(8) .shape {
+        animation-name: bump-b;
+      }
+
+      body:has(#tap-9:user-valid) .field label:nth-of-type(9) .shape {
+        animation-name: bump-a;
+      }
+
+      body:has(#tap-9:user-invalid) .field label:nth-of-type(9) .shape {
+        animation-name: bump-b;
+      }
+
+      body:has(#tap-10:user-valid) .field label:nth-of-type(10) .shape {
+        animation-name: bump-a;
+      }
+
+      body:has(#tap-10:user-invalid) .field label:nth-of-type(10) .shape {
+        animation-name: bump-b;
+      }
+
+      body:has(#tap-11:user-valid) .field label:nth-of-type(11) .shape {
+        animation-name: bump-a;
+      }
+
+      body:has(#tap-11:user-invalid) .field label:nth-of-type(11) .shape {
+        animation-name: bump-b;
+      }
+
+      body:has(#tap-12:user-valid) .field label:nth-of-type(12) .shape {
+        animation-name: bump-a;
+      }
+
+      body:has(#tap-12:user-invalid) .field label:nth-of-type(12) .shape {
+        animation-name: bump-b;
+      }
+
+      body:has(#tap-13:user-valid) .field label:nth-of-type(13) .shape {
+        animation-name: bump-a;
+      }
+
+      body:has(#tap-13:user-invalid) .field label:nth-of-type(13) .shape {
+        animation-name: bump-b;
+      }
+
+      body:has(#tap-14:user-valid) .field label:nth-of-type(14) .shape {
+        animation-name: bump-a;
+      }
+
+      body:has(#tap-14:user-invalid) .field label:nth-of-type(14) .shape {
+        animation-name: bump-b;
+      }
+
+      body:has(#tap-15:user-valid) .field label:nth-of-type(15) .shape {
+        animation-name: bump-a;
+      }
+
+      body:has(#tap-15:user-invalid) .field label:nth-of-type(15) .shape {
+        animation-name: bump-b;
+      }
+
+      body:has(#tap-16:user-valid) .field label:nth-of-type(16) .shape {
+        animation-name: bump-a;
+      }
+
+      body:has(#tap-16:user-invalid) .field label:nth-of-type(16) .shape {
+        animation-name: bump-b;
+      }
+
       body:has(#tap-1:user-valid) .edge[data-shape="1"][data-state="checked"],
       body:has(#tap-1:user-invalid) .edge[data-shape="1"][data-state="unchecked"] {
         display: block;
