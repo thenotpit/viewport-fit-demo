@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <!--
       An experiment. The strips are on every device, the page sits still on one flat blue, and tapping
-      any white shape flashes the strips white and fades them back to blue. The question is whether the
+      any shape flashes the strips in that shape's color and fades them back to blue. The question is whether the
       bars follow a strip that changes color with no scroll, as often as you can tap.
     -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -18,18 +18,21 @@
       }
 
       /*
-       * Tap a white shape and the strips jump to white and fade to blue over a second, as often as you
-       * like, with no script. Every shape is a label for one hidden checkbox, so each tap flips it. Two
-       * pairs of strips take turns: one is shown while the box is checked, the other while it is not, so
-       * every tap hides one pair and shows the other, and a newly shown element starts its animation
-       * from the top. The box is required and the pairs key off :user-valid and :user-invalid, which
-       * match only once the user has changed it, so nothing flashes at load. Each flash ends by hiding
-       * its pair, and a plain blue pair underneath keeps the bars flat between taps. The Mac and the
-       * iPad stop re-reading the top edge at the first scroll or tap, so the flash never reaches their
-       * bars; on the phone it should, every time.
+       * Every shape has a color of its own, and tapping it flashes the strips that color before they
+       * fade back to the blue, as often as you like, with no script. Each shape is a label for its own
+       * hidden checkbox, and has two pairs of strips that take turns: one shown while its box is checked,
+       * the other while it is not, so every tap hides one pair and shows the other, and a newly shown
+       * element starts its animation from the top. The boxes are required and the pairs key off
+       * :user-valid and :user-invalid, which match only once the user has changed a box, so nothing
+       * flashes at load. Each flash ends by hiding its pair, and a plain blue pair underneath keeps the
+       * bars flat between taps. The shape colors are sixteen hues round the wheel, each at the greatest
+       * lightness that keeps white text at 4.5:1 or better against it, so none of them trips desktop
+       * Safari's switch to dark text. The Mac and the iPad lock the bar at the first tap regardless.
        */
       .shape {
         cursor: pointer;
+        fill: var(--c);
+        stroke: var(--c);
       }
 
       .field label {
@@ -42,20 +45,15 @@
         animation: none;
       }
 
-      .edge[data-set] {
+      .edge[data-shape] {
         display: none;
         animation: flash 1s ease-out forwards;
         animation-timeline: auto;
       }
 
-      body:has(#tap:user-valid) .edge[data-set="checked"],
-      body:has(#tap:user-invalid) .edge[data-set="unchecked"] {
-        display: block;
-      }
-
       @keyframes flash {
         from {
-          background-color: #fff;
+          background-color: var(--c);
           visibility: visible;
         }
         to {
@@ -63,15 +61,235 @@
           visibility: hidden;
         }
       }
+
+      .field label:nth-of-type(1) .shape,
+      .edge[data-shape="1"] {
+        --c: #d61b1b;
+      }
+
+      .field label:nth-of-type(2) .shape,
+      .edge[data-shape="2"] {
+        --c: #b15016;
+      }
+
+      .field label:nth-of-type(3) .shape,
+      .edge[data-shape="3"] {
+        --c: #866911;
+      }
+
+      .field label:nth-of-type(4) .shape,
+      .edge[data-shape="4"] {
+        --c: #67730e;
+      }
+
+      .field label:nth-of-type(5) .shape,
+      .edge[data-shape="5"] {
+        --c: #457a0f;
+      }
+
+      .field label:nth-of-type(6) .shape,
+      .edge[data-shape="6"] {
+        --c: #1d7e10;
+      }
+
+      .field label:nth-of-type(7) .shape,
+      .edge[data-shape="7"] {
+        --c: #107e2b;
+      }
+
+      .field label:nth-of-type(8) .shape,
+      .edge[data-shape="8"] {
+        --c: #0f7c53;
+      }
+
+      .field label:nth-of-type(9) .shape,
+      .edge[data-shape="9"] {
+        --c: #0f7979;
+      }
+
+      .field label:nth-of-type(10) .shape,
+      .edge[data-shape="10"] {
+        --c: #1572aa;
+      }
+
+      .field label:nth-of-type(11) .shape,
+      .edge[data-shape="11"] {
+        --c: #3662e6;
+      }
+
+      .field label:nth-of-type(12) .shape,
+      .edge[data-shape="12"] {
+        --c: #6754ea;
+      }
+
+      .field label:nth-of-type(13) .shape,
+      .edge[data-shape="13"] {
+        --c: #923de7;
+      }
+
+      .field label:nth-of-type(14) .shape,
+      .edge[data-shape="14"] {
+        --c: #b719cd;
+      }
+
+      .field label:nth-of-type(15) .shape,
+      .edge[data-shape="15"] {
+        --c: #c7199b;
+      }
+
+      .field label:nth-of-type(16) .shape,
+      .edge[data-shape="16"] {
+        --c: #d21a5f;
+      }
+
+      body:has(#tap-1:user-valid) .edge[data-shape="1"][data-state="checked"],
+      body:has(#tap-1:user-invalid) .edge[data-shape="1"][data-state="unchecked"] {
+        display: block;
+      }
+
+      body:has(#tap-2:user-valid) .edge[data-shape="2"][data-state="checked"],
+      body:has(#tap-2:user-invalid) .edge[data-shape="2"][data-state="unchecked"] {
+        display: block;
+      }
+
+      body:has(#tap-3:user-valid) .edge[data-shape="3"][data-state="checked"],
+      body:has(#tap-3:user-invalid) .edge[data-shape="3"][data-state="unchecked"] {
+        display: block;
+      }
+
+      body:has(#tap-4:user-valid) .edge[data-shape="4"][data-state="checked"],
+      body:has(#tap-4:user-invalid) .edge[data-shape="4"][data-state="unchecked"] {
+        display: block;
+      }
+
+      body:has(#tap-5:user-valid) .edge[data-shape="5"][data-state="checked"],
+      body:has(#tap-5:user-invalid) .edge[data-shape="5"][data-state="unchecked"] {
+        display: block;
+      }
+
+      body:has(#tap-6:user-valid) .edge[data-shape="6"][data-state="checked"],
+      body:has(#tap-6:user-invalid) .edge[data-shape="6"][data-state="unchecked"] {
+        display: block;
+      }
+
+      body:has(#tap-7:user-valid) .edge[data-shape="7"][data-state="checked"],
+      body:has(#tap-7:user-invalid) .edge[data-shape="7"][data-state="unchecked"] {
+        display: block;
+      }
+
+      body:has(#tap-8:user-valid) .edge[data-shape="8"][data-state="checked"],
+      body:has(#tap-8:user-invalid) .edge[data-shape="8"][data-state="unchecked"] {
+        display: block;
+      }
+
+      body:has(#tap-9:user-valid) .edge[data-shape="9"][data-state="checked"],
+      body:has(#tap-9:user-invalid) .edge[data-shape="9"][data-state="unchecked"] {
+        display: block;
+      }
+
+      body:has(#tap-10:user-valid) .edge[data-shape="10"][data-state="checked"],
+      body:has(#tap-10:user-invalid) .edge[data-shape="10"][data-state="unchecked"] {
+        display: block;
+      }
+
+      body:has(#tap-11:user-valid) .edge[data-shape="11"][data-state="checked"],
+      body:has(#tap-11:user-invalid) .edge[data-shape="11"][data-state="unchecked"] {
+        display: block;
+      }
+
+      body:has(#tap-12:user-valid) .edge[data-shape="12"][data-state="checked"],
+      body:has(#tap-12:user-invalid) .edge[data-shape="12"][data-state="unchecked"] {
+        display: block;
+      }
+
+      body:has(#tap-13:user-valid) .edge[data-shape="13"][data-state="checked"],
+      body:has(#tap-13:user-invalid) .edge[data-shape="13"][data-state="unchecked"] {
+        display: block;
+      }
+
+      body:has(#tap-14:user-valid) .edge[data-shape="14"][data-state="checked"],
+      body:has(#tap-14:user-invalid) .edge[data-shape="14"][data-state="unchecked"] {
+        display: block;
+      }
+
+      body:has(#tap-15:user-valid) .edge[data-shape="15"][data-state="checked"],
+      body:has(#tap-15:user-invalid) .edge[data-shape="15"][data-state="unchecked"] {
+        display: block;
+      }
+
+      body:has(#tap-16:user-valid) .edge[data-shape="16"][data-state="checked"],
+      body:has(#tap-16:user-invalid) .edge[data-shape="16"][data-state="unchecked"] {
+        display: block;
+      }
     </style>
   </head>
   <body>
     <div class="edge edge-top" aria-hidden="true"></div>
     <div class="edge edge-bottom" aria-hidden="true"></div>
-    <div class="edge edge-top" data-set="checked" aria-hidden="true"></div>
-    <div class="edge edge-bottom" data-set="checked" aria-hidden="true"></div>
-    <div class="edge edge-top" data-set="unchecked" aria-hidden="true"></div>
-    <div class="edge edge-bottom" data-set="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="1" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="1" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="1" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="1" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="2" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="2" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="2" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="2" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="3" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="3" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="3" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="3" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="4" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="4" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="4" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="4" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="5" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="5" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="5" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="5" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="6" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="6" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="6" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="6" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="7" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="7" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="7" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="7" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="8" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="8" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="8" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="8" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="9" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="9" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="9" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="9" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="10" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="10" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="10" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="10" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="11" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="11" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="11" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="11" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="12" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="12" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="12" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="12" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="13" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="13" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="13" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="13" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="14" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="14" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="14" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="14" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="15" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="15" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="15" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="15" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="16" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="16" data-state="checked" aria-hidden="true"></div>
+    <div class="edge edge-top" data-shape="16" data-state="unchecked" aria-hidden="true"></div>
+    <div class="edge edge-bottom" data-shape="16" data-state="unchecked" aria-hidden="true"></div>
 
     <header class="bar">
       <svg viewBox="0 0 32 32" role="img" aria-label="Demo">
@@ -103,91 +321,107 @@
         <h1>Experimental.</h1>
       </div>
       <p>
-        The strips are on every device here and the page sits still on one flat blue. Tap any white
-        shape, as often as you like: the strips jump to white and fade back to blue over a second, with
-        no scrolling involved and no script. If the bars flash, Safari reads a strip whenever it repaints.<br>
+        The strips are on every device here and the page sits still on one flat blue. Every shape has a
+        color of its own. Tap one, as often as you like: the strips jump to its color and fade back to
+        blue over a second, with no scrolling involved and no script. Every color keeps white text at
+        4.5:1 or better, so none of them trips the switch to dark text.<br>
         On the Mac and iPad the first tap locks the bar, so the flash never reaches it there.
       </p>
     </div>
 
     <main class="field">
-      <input type="checkbox" id="tap" required hidden />
-      <label for="tap">
+      <input type="checkbox" id="tap-1" required hidden />
+      <input type="checkbox" id="tap-2" required hidden />
+      <input type="checkbox" id="tap-3" required hidden />
+      <input type="checkbox" id="tap-4" required hidden />
+      <input type="checkbox" id="tap-5" required hidden />
+      <input type="checkbox" id="tap-6" required hidden />
+      <input type="checkbox" id="tap-7" required hidden />
+      <input type="checkbox" id="tap-8" required hidden />
+      <input type="checkbox" id="tap-9" required hidden />
+      <input type="checkbox" id="tap-10" required hidden />
+      <input type="checkbox" id="tap-11" required hidden />
+      <input type="checkbox" id="tap-12" required hidden />
+      <input type="checkbox" id="tap-13" required hidden />
+      <input type="checkbox" id="tap-14" required hidden />
+      <input type="checkbox" id="tap-15" required hidden />
+      <input type="checkbox" id="tap-16" required hidden />
+      <label for="tap-1">
       <svg class="shape" style="--x: 10%; --y: 5%; --s: 6rem" viewBox="0 0 100 100" aria-hidden="true">
         <circle cx="50" cy="50" r="46" />
       </svg>
       </label>
-      <label for="tap">
+      <label for="tap-2">
       <svg class="shape" style="--x: 60%; --y: 9%; --s: 9rem" viewBox="0 0 100 100" aria-hidden="true">
         <circle class="line" cx="50" cy="50" r="44" />
       </svg>
       </label>
-      <label for="tap">
+      <label for="tap-3">
       <svg class="shape" style="--x: 30%; --y: 17%; --s: 7rem" viewBox="0 0 100 100" aria-hidden="true">
         <path d="M50 6 96 90H4Z" />
       </svg>
       </label>
-      <label for="tap">
+      <label for="tap-4">
       <svg class="shape" style="--x: 72%; --y: 24%; --s: 5rem; --r: 18deg" viewBox="0 0 100 100" aria-hidden="true">
         <rect x="6" y="6" width="88" height="88" rx="18" />
       </svg>
       </label>
-      <label for="tap">
+      <label for="tap-5">
       <svg class="shape" style="--x: 12%; --y: 29%; --s: 4rem" viewBox="0 0 100 100" aria-hidden="true">
         <path class="line" d="M50 10v80M10 50h80" stroke-width="16" />
       </svg>
       </label>
-      <label for="tap">
+      <label for="tap-6">
       <svg class="shape" style="--x: 50%; --y: 34%; --s: 8rem" viewBox="0 0 100 100" aria-hidden="true">
         <path d="M50 4l13.5 27.4 30.2 4.4-21.9 21.3 5.2 30.1L50 73 23 87.2l5.2-30.1L6.3 35.8l30.2-4.4Z" />
       </svg>
       </label>
-      <label for="tap">
+      <label for="tap-7">
       <svg class="shape" style="--x: 82%; --y: 40%; --s: 3rem" viewBox="0 0 100 100" aria-hidden="true">
         <circle cx="50" cy="50" r="46" />
       </svg>
       </label>
-      <label for="tap">
+      <label for="tap-8">
       <svg class="shape" style="--x: 16%; --y: 44%; --s: 7rem; --r: 30deg" viewBox="0 0 100 100" aria-hidden="true">
         <rect class="line" x="8" y="8" width="84" height="84" />
       </svg>
       </label>
-      <label for="tap">
+      <label for="tap-9">
       <svg class="shape" style="--x: 46%; --y: 52%; --s: 10rem" viewBox="0 0 100 100" aria-hidden="true">
         <path class="line" d="M6 50l11-14 11 14 11-14 11 14 11-14 11 14 11-14 11 14" />
       </svg>
       </label>
-      <label for="tap">
+      <label for="tap-10">
       <svg class="shape" style="--x: 70%; --y: 58%; --s: 6rem; --r: -12deg" viewBox="0 0 100 100" aria-hidden="true">
         <path class="line" d="M50 8 92 86H8Z" />
       </svg>
       </label>
-      <label for="tap">
+      <label for="tap-11">
       <svg class="shape" style="--x: 8%; --y: 63%; --s: 8rem" viewBox="0 0 100 100" aria-hidden="true">
         <path d="M4 70a46 46 0 0 1 92 0Z" />
       </svg>
       </label>
-      <label for="tap">
+      <label for="tap-12">
       <svg class="shape" style="--x: 40%; --y: 69%; --s: 4rem" viewBox="0 0 100 100" aria-hidden="true">
         <circle class="line" cx="50" cy="50" r="40" stroke-width="10" />
       </svg>
       </label>
-      <label for="tap">
+      <label for="tap-13">
       <svg class="shape" style="--x: 64%; --y: 75%; --s: 7rem" viewBox="0 0 100 100" aria-hidden="true">
         <path d="M50 4 96 50 50 96 4 50Z" />
       </svg>
       </label>
-      <label for="tap">
+      <label for="tap-14">
       <svg class="shape" style="--x: 18%; --y: 82%; --s: 10rem" viewBox="0 0 100 100" aria-hidden="true">
         <circle cx="50" cy="50" r="46" />
       </svg>
       </label>
-      <label for="tap">
+      <label for="tap-15">
       <svg class="shape" style="--x: 78%; --y: 88%; --s: 5rem; --r: 45deg" viewBox="0 0 100 100" aria-hidden="true">
         <path class="line" d="M50 10v80M10 50h80" stroke-width="14" />
       </svg>
       </label>
-      <label for="tap">
+      <label for="tap-16">
       <svg class="shape" style="--x: 42%; --y: 93%; --s: 4rem" viewBox="0 0 100 100" aria-hidden="true">
         <path d="M50 4l13.5 27.4 30.2 4.4-21.9 21.3 5.2 30.1L50 73 23 87.2l5.2-30.1L6.3 35.8l30.2-4.4Z" />
       </svg>

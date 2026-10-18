@@ -21,7 +21,7 @@
        * again, 3 seconds a lap, on every device. The strips run it above the header, the bottom strip
        * half a lap behind the top, and every floating shape runs it on its fill and stroke, each shape
        * started at a different point in the lap by a negative delay. All of these colors are too light
-       * for white text, so desktop Safari's bar sits in dark text throughout.
+       * for white text, so on desktop the strips take a darker version of the lap, below.
        */
       .edge {
         display: block;
@@ -123,6 +123,41 @@
         }
         100% {
           background-color: #ffb3d9;
+        }
+      }
+
+      /*
+       * Desktop only: the strips run a dark, saturated version of the same lap, each hue at the
+       * greatest lightness that keeps white text at 4.5:1 or better, so the Mac's bar keeps its light
+       * text for as long as it follows the strips. The shapes keep the pale colors.
+       */
+      @media (hover: hover) and (pointer: fine) {
+        .edge {
+          animation-name: holo-dark;
+        }
+      }
+
+      @keyframes holo-dark {
+        0.000% {
+          background-color: #c31069;
+        }
+        16.667% {
+          background-color: #a9470e;
+        }
+        33.333% {
+          background-color: #736509;
+        }
+        50.000% {
+          background-color: #09752d;
+        }
+        66.667% {
+          background-color: #0d6b9b;
+        }
+        83.333% {
+          background-color: #8031ee;
+        }
+        100% {
+          background-color: #c31069;
         }
       }
 
