@@ -18,23 +18,298 @@
       }
 
       /*
-       * The strips on every device, above the header, pulsing between the blue and the pink sixteen times a second.
-       * WebKit re-reads a fixed edge whenever the element repaints, so a timed animation should move
-       * the bars with no scroll at all. The Mac and the iPad stop re-reading the top edge after the first
-       * scroll, so there the pulse should run until you scroll and then lock. The pink is past the point
-       * where desktop Safari switches its bar to dark text, which is part of the experiment.
+       * The strips on every device, above the header, pulsing between the blue and the pink. The pulse
+       * starts at four beats a second, speeds up to sixteen, the fastest rate the bars were seen to
+       * follow, and slows back down, on a loop. CSS cannot animate an animation's own speed, so the
+       * ramp is one long keyframe list: each keyframe is a beat, and they bunch up and spread out.
+       * WebKit re-reads a fixed edge whenever the element repaints, so this moves the bars with no
+       * scroll at all. The Mac and the iPad stop re-reading the top edge after the first scroll, so
+       * there the pulse runs until you scroll and then locks.
        */
       .edge {
         display: block;
         z-index: 2;
-        animation: pulse 0.0625s ease-in-out infinite alternate;
+        animation: pulse 8.25s linear infinite;
         animation-timeline: auto;
       }
 
       @keyframes pulse {
-        from {
+        0.000% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        3.030% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        6.061% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        9.091% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        12.121% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        14.394% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        16.667% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        18.939% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        21.212% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        23.485% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        25.758% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        27.273% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        28.788% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        30.303% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        31.818% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        33.333% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        34.848% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        36.364% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        37.879% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        38.636% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        39.394% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        40.152% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        40.909% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        41.667% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        42.424% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        43.182% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        43.939% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        44.697% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        45.455% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        46.212% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        46.970% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        47.727% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        48.485% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        49.242% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        50.000% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        50.758% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        51.515% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        52.273% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        53.030% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        53.788% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        54.545% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        55.303% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        56.061% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        56.818% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        57.576% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        58.333% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        59.091% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        59.848% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        60.606% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        61.364% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        62.121% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        63.636% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        65.152% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        66.667% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        68.182% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        69.697% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        71.212% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        72.727% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        74.242% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        76.515% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        78.788% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        81.061% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        83.333% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        85.606% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        87.879% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        90.909% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        93.939% {
+          background-color: var(--day-top);
+          animation-timing-function: ease-in-out;
+        }
+        96.970% {
+          background-color: var(--day-bottom);
+          animation-timing-function: ease-in-out;
+        }
+        100% {
           background-color: var(--day-top);
         }
+      }
         to {
           background-color: var(--day-bottom);
         }
@@ -62,6 +337,7 @@
         <a href="viewport-auto.html">Color Strip Hack</a>
         <a href="gradient.html">Variable Strips</a>
         <a href="experimental.html" aria-current="page">Experimental</a>
+        <a href="experimental-2.html">Experimental 2</a>
       </nav>
       <p class="byline">Demo by <a href="https://mrtipton.com">mrtipton.com</a></p>
     </div>
@@ -74,9 +350,9 @@
         <h1>Experimental.</h1>
       </div>
       <p>
-        The strips are on every device here and pulse between blue and pink on a sixteenth-of-a-second timer,
-        with no scrolling involved. The page itself stays blue. If the bars pulse, Safari reads a strip
-        whenever it repaints, not only on scroll.<br>
+        The strips are on every device here and pulse between blue and pink with no scrolling involved,
+        starting at four beats a second, speeding up to sixteen, and slowing back down. The page itself
+        stays blue. If the bars pulse, Safari reads a strip whenever it repaints, not only on scroll.<br>
         On the Mac and iPad, expect the pulse to run until the first scroll and then lock.
       </p>
     </div>

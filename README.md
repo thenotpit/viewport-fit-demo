@@ -16,7 +16,9 @@ Three pages, switched from the menu:
 - **Variable Strips** (`gradient.html`): the strips again, on a gradient. The top strip follows the
   gradient's color at the top of the screen, the bottom strip its color at the bottom.
 - **Experimental** (`experimental.html`): the strips on every device, pulsing on a timer with the
-  page sitting still, to see whether the bars follow a strip that changes without a scroll.
+  page sitting still, speeding up and slowing down, to see how fast the bars follow a strip that
+  changes without a scroll. They kept up at sixteen beats a second on the iPhone.
+- **Experimental 2** (`experimental-2.html`): the same, drifting through pale holographic colors.
 
 ## The basics
 
