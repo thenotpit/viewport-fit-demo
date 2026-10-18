@@ -54,8 +54,17 @@
        * trips desktop Safari's switch to dark text. The Mac and the iPad lock the bar at the first tap
        * regardless.
        */
+      /*
+       * Taps must land as fast as they come. touch-action: manipulation stops Safari holding each tap
+       * to see whether a double-tap-to-zoom is coming; the rest stops highlights and text selection on
+       * a quick or long press.
+       */
       .shape {
         cursor: pointer;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-user-select: none;
+        user-select: none;
         fill: var(--c);
         stroke: var(--c);
       }

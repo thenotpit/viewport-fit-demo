@@ -137,6 +137,17 @@
         }
       }
 
+      /*
+       * On the Mac and the iPad the bar is glass over the page, not a painted fill, so what shows is the
+       * strip as painted: 10% of a color over black is black. Everything that is not a phone gets the
+       * strips at 20% to test that.
+       */
+      @media not ((hover: none) and (max-width: 500px)), not ((hover: none) and (max-height: 500px)) {
+        .edge {
+          opacity: 0.2;
+        }
+      }
+
       @keyframes holo-dark {
         0.000% {
           background-color: #c31069;
