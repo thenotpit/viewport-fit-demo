@@ -3,29 +3,103 @@
   <head>
     <meta charset="utf-8" />
     <!--
-      A second experiment. The strips are on every device and drift through pale holographic colors
-      on a timer, with the page sitting still on one flat blue.
+      A second experiment. The page is black and sits still. The strips and every floating shape run
+      the same lap through pale holographic colors, each starting at a different point in it.
     -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>viewport-fit=cover demo: experimental 2</title>
     <link rel="stylesheet" href="styles.css?v=480f71e2" />
     <style>
-      /* One flat blue: html's scroll-driven color is off, so the strips are the only thing changing. */
+      /* Black, and still: html's scroll-driven color is off. */
       html {
-        background-color: var(--day-top);
+        background-color: #000;
         animation: none;
       }
 
       /*
-       * The strips on every device, above the header, drifting through pale holographic colors: pink,
-       * peach, lemon, mint, sky, lavender and round again, six seconds a lap. All of them are too
-       * light for white text, so desktop Safari's bar will sit in dark text throughout.
+       * One lap through pale holographic colors, pink, peach, lemon, mint, sky, lavender and round
+       * again, 3 seconds a lap, on every device. The strips run it above the header, the bottom strip
+       * half a lap behind the top, and every floating shape runs it on its fill and stroke, each shape
+       * started at a different point in the lap by a negative delay. All of these colors are too light
+       * for white text, so desktop Safari's bar sits in dark text throughout.
        */
       .edge {
         display: block;
         z-index: 2;
-        animation: holo 6s linear infinite;
+        animation: holo 3s linear infinite;
         animation-timeline: auto;
+      }
+
+      .edge-bottom {
+        animation-delay: -1.5s;
+      }
+
+      .shape {
+        animation: holo-shape 3s linear infinite;
+      }
+
+      .shape:nth-of-type(1) {
+        animation-delay: -0s;
+      }
+
+      .shape:nth-of-type(2) {
+        animation-delay: -0.1875s;
+      }
+
+      .shape:nth-of-type(3) {
+        animation-delay: -0.375s;
+      }
+
+      .shape:nth-of-type(4) {
+        animation-delay: -0.5625s;
+      }
+
+      .shape:nth-of-type(5) {
+        animation-delay: -0.75s;
+      }
+
+      .shape:nth-of-type(6) {
+        animation-delay: -0.9375s;
+      }
+
+      .shape:nth-of-type(7) {
+        animation-delay: -1.125s;
+      }
+
+      .shape:nth-of-type(8) {
+        animation-delay: -1.312s;
+      }
+
+      .shape:nth-of-type(9) {
+        animation-delay: -1.5s;
+      }
+
+      .shape:nth-of-type(10) {
+        animation-delay: -1.688s;
+      }
+
+      .shape:nth-of-type(11) {
+        animation-delay: -1.875s;
+      }
+
+      .shape:nth-of-type(12) {
+        animation-delay: -2.062s;
+      }
+
+      .shape:nth-of-type(13) {
+        animation-delay: -2.25s;
+      }
+
+      .shape:nth-of-type(14) {
+        animation-delay: -2.438s;
+      }
+
+      .shape:nth-of-type(15) {
+        animation-delay: -2.625s;
+      }
+
+      .shape:nth-of-type(16) {
+        animation-delay: -2.812s;
       }
 
       @keyframes holo {
@@ -49,6 +123,37 @@
         }
         100% {
           background-color: #ffb3d9;
+        }
+      }
+
+      @keyframes holo-shape {
+        0.000% {
+          fill: #ffb3d9;
+          stroke: #ffb3d9;
+        }
+        16.667% {
+          fill: #ffcdb3;
+          stroke: #ffcdb3;
+        }
+        33.333% {
+          fill: #fff0b3;
+          stroke: #fff0b3;
+        }
+        50.000% {
+          fill: #c9ffd6;
+          stroke: #c9ffd6;
+        }
+        66.667% {
+          fill: #b3e8ff;
+          stroke: #b3e8ff;
+        }
+        83.333% {
+          fill: #d1b3ff;
+          stroke: #d1b3ff;
+        }
+        100% {
+          fill: #ffb3d9;
+          stroke: #ffb3d9;
         }
       }
     </style>
@@ -87,9 +192,9 @@
         <h1>Experimental 2.</h1>
       </div>
       <p>
-        The strips are on every device here and drift through pale holographic colors, pink to peach to
-        lemon to mint to sky to lavender, six seconds a lap, with no scrolling involved. The page
-        itself stays blue.
+        The page is black and sits still. The strips and every floating shape run the same lap through
+        pale holographic colors, three seconds a lap, each starting at a different point in it, with no
+        scrolling involved.
       </p>
     </div>
 
